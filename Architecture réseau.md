@@ -220,7 +220,7 @@ ns13.serveur_dns13.com has address 192.168.13.254
 
 ## Pour la partie HTTP :
 
-Nous avons créé un fichier de configuration pour notre site monsite.conf avec la commande suivante :
+Nous avons créé un fichier de configuration ```monsite.conf``` pour notre site avec la commande suivante :
  ``` 
  nano /etc/apache2/site-available/monsite.conf 
  ```
@@ -237,46 +237,47 @@ Dans le fichier de configuration monsite.conf :
   </Directory>
 </VirtualHost>
 ```
-Nous avons configuré un virtual host pour écouter sur le port 80, défini le répertoire racine, et spécifié certaines options pour le répertoire.
+Nous avons configuré un virtual host pour écouter sur le *port 80*, défini le *répertoire racine*, et spécifié certaines options pour le répertoire.
 
-Nous avons activé le site en utilisant la commande :
+On active le site en utilisant la commande :
 ```shell
-sudo a2ensite monsite.conf
+a2ensite monsite.conf
 ```
 
-Et enfin nous avons redémarré le service Apache :
+Et enfin on redémarre le service Apache :
 ```shell
 systemctl restart apache2
 ```
-Ensuite nous allons télécharger notre MVC grâce à la commande suivante :
+Ensuite nous allons **télécharger** notre MVC grâce à la commande suivante :
 ```shell
 wget https://gitlab.univ-nantes.fr/pub/but/but2/r3.01/r3.01/-/archive/main/r3.01-main.zip?path=td/workspace
 ```
 
 Nous allons dans le dossier et copions /app et /system dans /var/www/html :
-```sudo cp -r \* /var/www/html```
-
-Pour pouvoir tester depuis d'autres pc, il faut etre sur le même vlan, mais aussi il faut faire en sorte de ne pas passer par le proxy ( le proxy refusant de faire passer la requete ). Dans les préférences du proxy, nous avons rajouté dans 
-```
-"noproxy for" : "10.0.13.13"
+```shell 
+sudo cp -r ./* /var/www/html
 ```
 
-Pour pouvoir permettre au PC extérieurs d'accéder à la page php, nous devons rediriger le flux port 80 vers la bonne ip : 
+Pour pouvoir tester depuis d'autres pc, il faut faire en sorte de ne pas passer par le proxy ( le proxy étant paramétré pour refuser de faire passer la requête ). 
+
+Dans les préférences du proxy, nous avons rajouté dans la catégorie "noproxy for"  : "10.0.13.13"
+
+Pour pouvoir permettre au PC extérieurs d'accéder à la page PHP, nous devons rediriger le flux du port 80 du **serveur** vers la bonne ip : 
 ```shell
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
 ```
 
-Nous devons mettre en place des route pour permettre a des machines exterieurs d'acceder a notre serveur http : 
 
-( sur la machine routeur )
+Finalement, nous devons mettre en place des routes pour permettre a des machines extérieurs d'acceder a notre serveur HTTP : 
 ```ip route add 192.168.13.0/24 via 192.168.13.254```
+( sur la machine routeur )
 
-( sur le serveur http )
 ```ip route add 192.168.13.0/24 via 10.0.13.254```
+( sur la machine interne, qui détient le serveur HTTP )
 
+<a id="lienIpRoute">```ip route add 10.0.13.0/24 via 192.168.13.254```</a>
 ( sur la machine extérieur )
-```ip route add 10.0.13.0/24 via 192.168.13.254```
 
-Toutes ces commandes permettent d'accéder au serveur http, et donc, a notre site web, en passant par le serveur.
-Il est par contre nécessaire, pour les machines exterieurs, de rajouter la route correspondante.
+Toutes ces commandes permettent d'accéder au serveur HTTP, et donc, a notre site web, en passant par le serveur.
+Il est par contre nécessaire, pour toute machine extérieur au réseau, de rajouter [la route correspondante](#ma-section).
 
