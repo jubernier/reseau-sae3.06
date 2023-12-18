@@ -130,7 +130,9 @@ Celui-ci nous fournira une **route par défaut** vers la machine ROUTEUR, le **n
 L'hôte INTERNE doit se voir délivrer une **adresse fixe** en fonction de son adresse MAC.
 
 **Routeur par défaut :** : ```option routers 10.0.13.254;```
+
 **Nom de domaine** et **IP* à utiliser pour la résolution de noms :   ```option domain-name-servers 10.0.13.254;``` et ```option domain-name "serveur_dns13.com";```.
+
 **Adresse fixe** de INTERNE : 
 ```bash
   option routers 10.0.13.254; // Route par défaut vers la machine routeur
