@@ -325,7 +325,7 @@ permettant d'automatiser la configuration réseau des périphériques connectés
 * Un **DNS** : 
 simplifiant l'utilisation des noms de domaine, plutôt que de mémoriser des adresses IP complexes, les utilisateurs peuvent désormais accéder à des ressources réseau en utilisant des noms simples, améliorant ainsi l'expérience utilisateur.
 * Un **Serveur HTTP** :
-constituant une étape cruciale pour rendre accessible notre projet de SAE, grâce à cette configuration, notre site web peut être consulté via un navigateur.
+constituant une étape cruciale pour rendre accessible notre projet de SAE. Grâce à cette configuration, notre site web peut être consulté via un navigateur.
 
 En conclusion, notre travail a abouti à la mise en place réussie d'un réseau fonctionnel comprenant un VLAN, un serveur DHCP, un serveur DNS, et enfin, un serveur HTTP permettant l'accès à notre projet de SAE. 
 
