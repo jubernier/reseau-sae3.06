@@ -19,27 +19,30 @@ Externe : 192.168.13.1/24 dev jaune
 
 Avant de commencer, nous avons mis en place le VLAN, qui permettrait, plus tard, de donner une configuration réseau au client externe grace au serveur DHCP de routeur.
 
-Les commandes que nous avons effectuées : 
-
-Installer le module noyau nécessaire :
+Nous avons commencé par charger le module noyau nécessaire en utilisant la commande suivante :
 ```
 modprobe 8021q
 ```
-Rajouter la vlan qui s'appelera jaune.13 :
+Cela a permis d'activer le support VLAN dans le noyau
+
+Ensuite, nous avons créé une interface virtuelle VLAN appelée jaune.13 sur la base de l'interface physique jaune. Cette opération a été effectuée avec la commande :
 ```
 ip link add link jaune name jaune.13 type vlan id 13
 ```
-“Démarrer” la vlan :
+Pour activer la nouvelle interface virtuelle VLAN, nous avons exécuté la commande suivante :
 ```
 ip link set jaune.13 up
 ```
-Et **chaque machine** doit s’attribuer manuellement une ip :
+Cela a permis de mettre en service l'interface virtuelle VLAN jaune.13.
 
-( pour le routeur )
+Chacune des machines connectées au VLAN a ensuite reçu une adresse IP manuellement. 
+
+Pour le routeur, nous avons utilisé la commande :
+
 ```
 ip a add 10.0.13.254/4 dev jaune.13
 ```
-( pour le client )
+Et pour le client :
 ```
 ip a add 10.0.13.13/4 dev jaune.13
 ```
