@@ -4,40 +4,28 @@ Ci-dessous un schéma de l’organisation du réseau que vous aurez à mettre en
 
 ![](Aspose.Words.3043882c-0868-4b50-a159-dc74a3c85fbb.001.png)
 
-**DNS**
 
-Choisissez un nom de domaine dans .com. Votre serveur DNS gérera a minima les noms suivants : ROUTEUR, www qui sera un alias d'une autre machine. Vous fournirez également la procédure et le(s) fichier(s) pour faire une délégation depuis le serveur de .com
-
-**VLAN**
-
-Mettez en place un VLAN sur la partie privée de votre réseau.
-
-**DHCP**
-
-Installez et configurez un serveur DHCP (paquet isc-dhcp-server). Celui-ci fournira une route par défaut vers la machine ROUTEUR, le nom de domaine, et l’IP du serveur DNS. L'hôte CLIENT doit se voir délivrer une adresse fixe en fonction de son adresse MAC.
-
-**HTTP Autre**
-
-Vous pouvez compléter votre configuration par les éléments de votre choix (filtrage, services supplémentaires, ...)
-
-**Rendu**
-
-Rédiger un document (rapport.md) expliquant vos choix. Vous fournirez également : - des captures de trames démontrant le bon fonctionnement de votre réseau. En particulier, une capture de trame faite sur le ROUTEUR d'une requête HTTP émise depuis l'extérieur et une capture montrant que CLIENT peut accéder au LAN. - le résultat des commandes ./log > MACHINE.log, où MACHINE correspond à la machine sur laquelle doit être exécutée la commande avec les droits root, et doit être remplacée successivement par CLIENT et ROUTEUR
 
 Interne : 10.0.13.13/24 dev jaune
-Routeur : 10.0.13.254/24 dev jaune et 
+
+Routeur : 
+* ip réseau interne -> 10.0.13.254/24 dev jaune 
+* ip réseau externe -> 192.168.13.254/24 dev jaune
+
 Externe : 192.168.13.1/24 dev jaune
 
 
 ## Mettre en place la vlan :
 
-Avant de commencer, il faut mettre en place le VLAN, qui permettrait, plus tard, de donner une configuration réseau au client externe grace au serveur DHCP de routeur.
+Avant de commencer, nous avons mis en place le VLAN, qui permettrait, plus tard, de donner une configuration réseau au client externe grace au serveur DHCP de routeur.
+
+Les commandes que nous avons effectuées : 
 
 Installer le module noyau nécessaire :
 ```
 modprobe 8021q
 ```
-Rajouter la vlan :
+Rajouter la vlan qui s'appelera jaune.13 :
 ```
 ip link add link jaune name jaune.13 type vlan id 13
 ```
@@ -46,6 +34,7 @@ ip link add link jaune name jaune.13 type vlan id 13
 ip link set jaune.13 up
 ```
 Et **chaque machine** doit s’attribuer manuellement une ip :
+
 ( pour le routeur )
 ```
 ip a add 10.0.13.254/4 dev jaune.13
@@ -54,6 +43,8 @@ ip a add 10.0.13.254/4 dev jaune.13
 ```
 ip a add 10.0.13.13/4 dev jaune.13
 ```
+Nous pouvons observer que lorsque nous effectuons ```ip a ``` : 
+
 
 ## Pour la partie DHCP :
 
@@ -64,18 +55,18 @@ Il faut en premier modifier le fichier de conf. :
 sudo nano /etc/sysctl.conf
 ```
 
-Il faut ensuite décommenter la ligne suivante, qui sert à activer l'ip forwarding :
+Nous avons ensuite décommenter la ligne suivante, qui sert à activer l'ip forwarding :
 ```
 #net.ipv4.ip_forward=1
 ```
 
 
-Puis il faut recharger le fichier de conf. :
+Puis nous avons recharger le fichier de conf. :
 ```
 sysctl -p /etc/sysctl.conf
 ```
 
-Le résultat devrait ressembler à cela :
+Le résultat ressemble à cela :
 ```bash 
 root@debian:/home/tdreseau# sysctl -p /etc/sysctl.conf
 net.ipv4.ip_forward = 1
@@ -108,13 +99,17 @@ Dans le fichier on modifie :
 interfacesv4="jaune.13"
 ```
 
-On redémarre le service :
+Nous redémarrons le service :
 ```
 sudo systemctl restart isc-dhcp-server
 ```
+Nous avons installé et configuré un serveur DHCP (paquet isc-dhcp-server). Celui-ci nous fournira une route par défaut vers la machine ROUTEUR, le nom de domaine, et l’IP du serveur DNS. L'hôte INTERNE doit se voir délivrer une adresse fixe en fonction de son adresse MAC.
 
+Comme nous pouvons l'observez :
+...
 
 ## Pour la partie DNS :
+Le DNS (Domain Name System) est un système qui traduit les noms de domaine en adresses IP, facilitant la navigation sur Internet en utilisant des noms conviviaux au lieu de mémoriser des adresses numériques.
 
 Dans /etc/bind\_sae\_dns13.db on crée un nouveau fichier avec :
 ```
@@ -123,22 +118,28 @@ Dans /etc/bind\_sae\_dns13.db on crée un nouveau fichier avec :
 On rajoute les lignes suivantes :
 ```bash
 $ttl 38400
-@       IN      SOA     ns13.serveur_dns13.com. postmaster.ns13.serveur_dns13.com. (
+@       IN      SOA     ns13.serveur_dns13.com. postmaster.ns13.sae_dns13.com. (
                 1       ; Numero de serie, a incrementer a chaque modification
                 10800   ; Rafraichissement
                 3600    ; Nouvel essai apres 1 heure
                 604800  ; Obsolescence apres 1 semaine
                 86400 ) ; TTL minimale de 1 jour
 
-         IN    NS    ns13.serveur_dns13.com.
-ns13     IN    A     192.168.13.254
+              IN    NS    ns13.serveur_dns13.com.
+ns13       IN    A     192.168.13.254
 www      IN    CNAME  ns13.serveur_dns13.com.
-routeur  IN    CNAME  ns13.serveur_dns13.com.
+routeur   IN    CNAME  ns13.serveur_dns13.com.
 
 
 ```
 
-On redemarre Bind9 :
+* La première section (@ IN SOA...) est l'enregistrement de la zone qui spécifie les informations sur le domaine.
+* IN NS ns13.sae_dns13.com -> déclare le serveur de noms principal pour la zone.
+* ns13 IN A 10.0.13.254 -> spécifie l'adresse IP du serveur.
+* www IN CNAME interne.ns13.sae_dns13.com -> crée un alias (CNAME) pour le nom www, pointant vers interne.ns13.sae_dns13.com.
+* interne IN A 10.0.13.13 et routeur IN A 10.0.13.254 -> définissent les adresses IP d'autres hôtes.
+
+On redemarre le service BIND pour appliquer les modifications.:
 ```
 sudo systemctl restart bind9
 ```
