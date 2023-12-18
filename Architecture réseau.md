@@ -279,5 +279,5 @@ Finalement, nous devons mettre en place des routes pour permettre a des machines
 ( sur la machine extérieur )
 
 Toutes ces commandes permettent d'accéder au serveur HTTP, et donc, a notre site web, en passant par le serveur.
-Il est par contre nécessaire, pour toute machine extérieur au réseau, de rajouter [la route correspondante](#ma-section).
+Il est par contre nécessaire, pour toute machine extérieur au réseau, de rajouter [la route correspondante](#lienIpRoute).
 
