@@ -244,3 +244,19 @@ Pour pouvoir tester depuis d'autres pc, il faut etre sur le même vlan, mais aus
 Pour pouvoir permettre au PC extérieurs d'accéder à la page php, nous devons rediriger le flux port 80 vers la bonne ip : 
 ```bash
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+```
+
+Nous devons mettre en place des route pour permettre a des machines exterieurs d'acceder a notre serveur http : 
+
+( sur la machine routeur )
+```ip route add 192.168.13.0/24 via 192.168.13.254```
+
+( sur le serveur http )
+```ip route add 192.168.13.0/24 via 10.0.13.254```
+
+( sur la machine extérieur )
+```ip route add 10.0.13.0/24 via 192.168.13.254```
+
+Toutes ces commandes permettent d'accéder au serveur http, et donc, a notre site web, en passant par le serveur.
+Il est par contre nécessaire, pour les machines exterieurs, de rajouter la route correspondante.
+
