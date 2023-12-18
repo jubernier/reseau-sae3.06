@@ -26,7 +26,93 @@ Interne : 10.0.13.13/24 dev jaune
 Routeur : 10.0.13.254/24 dev jaune et 
 Externe : 192.168.13.1/24 dev jaune
 
-Pour la partie DNS :
+
+## Mettre en place la vlan :
+
+Avant de commencer, il faut mettre en place le VLAN, qui permettrait, plus tard, de donner une configuration réseau au client externe grace au serveur DHCP de routeur.
+
+Installer le module noyau nécessaire :
+```
+modprobe 8021q
+```
+Rajouter la vlan :
+```
+ip link add link jaune name jaune.13 type vlan id 13
+```
+“Démarrer” la vlan :
+```
+ip link set jaune.13 up
+```
+Et **chaque machine** doit s’attribuer manuellement une ip :
+( pour le routeur )
+```
+ip a add 10.0.13.254/4 dev jaune.13
+```
+( pour le client )
+```
+ip a add 10.0.13.13/4 dev jaune.13
+```
+
+## Pour la partie DHCP :
+
+En tout premier nous devons activer le forwarding : 
+
+Il faut en premier modifier le fichier de conf. :
+```
+sudo nano /etc/sysctl.conf
+```
+
+Il faut ensuite décommenter la ligne suivante, qui sert à activer l'ip forwarding :
+```
+#net.ipv4.ip_forward=1
+```
+
+
+Puis il faut recharger le fichier de conf. :
+```
+sysctl -p /etc/sysctl.conf
+```
+
+Le résultat devrait ressembler à cela :
+```bash 
+root@debian:/home/tdreseau# sysctl -p /etc/sysctl.conf
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.all.autoconf = 0
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.default.autoconf = 0
+```
+
+Avec la commande ```sudo nano /etc/dhcp/dhcpd.conf```, à la fin du fichier, nous rajoutons :
+```bash
+subnet 10.0.13.0 netmask 255.255.255.0 {
+  range 10.0.13.1 10.0.13.253;
+  option domain-name-servers 10.0.13.254;
+  option domain-name "serveur_dns13.com";
+  option routers 10.0.13.254;
+  host CLIENT {
+      hardware ethernet 04:8d:38:cf:7e:8a;
+      fixed-address 10.0.13.13;
+   }
+ }
+```
+Dans ```/etc/default/isc–dhcp-server``` nous rajoutons l'interface avec laquel nous voudrons recuperer notre configuration réseau, dans notre cas le VLAN donc jaune.13 :
+```
+sudo nano /etc/default/isc-dhcp-server
+```
+Dans le fichier on modifie :
+```
+. . .
+interfacesv4="jaune.13"
+```
+
+On redémarre le service :
+```
+sudo systemctl restart isc-dhcp-server
+```
+
+
+## Pour la partie DNS :
 
 Dans /etc/bind\_sae\_dns13.db on crée un nouveau fichier avec :
 ```
@@ -74,7 +160,7 @@ file "/var/cache/bind/sae\_dns13.db"; // on indique le fichier contena$ };
 nano /etc/resolv.conf
 ```
 
-### Pour la partie HTTP :
+## Pour la partie HTTP :
 
 Créer un fichier de configuration : ``` nano /etc/apache2/site-available/monsite.conf ```
 Dans le fichier de configuration monsite.conf :
@@ -103,89 +189,6 @@ wget https://gitlab.univ-nantes.fr/pub/but/but2/r3.01/r3.01/-/archive/main/r3 .0
 Nous allons dans le dossier et copions /app et /system dans /var/www/html :
 
 ```sudo cp -r \* /var/www/html```
-
-## Mettre en place la vlan :
-
-Installer le module noyau nécessaire :
-```
-modprobe 8021q
-```
-Rajouter la vlan :
-```
-ip link add link jaune name jaune.13 type vlan id 13
-```
-“Démarrer” la vlan :
-```
-ip link set jaune.13 up
-```
-Et **chaque machine** doit s’attribuer manuellement une ip :
-( pour le routeur )
-```
-ip a add 10.0.13.254/4 dev jaune.13
-```
-( pour le client )
-```
-ip a add 10.0.13.13/4 dev jaune.13
-```
-Pour la partie DHCP :
-
-En tout premier nous devons activer le forwarding : 
-
-Il faut en premier modifier le fichier de conf. :
-```
-sudo nano /etc/sysctl.conf
-```
-
-Il faut ensuite décommenter la ligne suivante, qui sert à activer l'ip forwarding :
-```
-#net.ipv4.ip_forward=1
-```
-
-
-Puis il faut recharger le fichier de conf. :
-```
-sysctl -p /etc/sysctl.conf
-```
-
-le résultat devrait ressemblé à cela :
-```bash 
-root@debian:/home/tdreseau# sysctl -p /etc/sysctl.conf
-net.ipv4.ip_forward = 1
-net.ipv6.conf.all.disable_ipv6 = 1
-net.ipv6.conf.all.autoconf = 0
-net.ipv6.conf.default.disable_ipv6 = 1
-net.ipv6.conf.default.autoconf = 0
-```
-
-Avec la commande ```sudo nano /etc/dhcp/dhcpd.conf```, à la fin du fichier, nous rajoutons :
-```bash
-subnet 10.0.13.0 netmask 255.255.255.0 {
-  range 10.0.13.1 10.0.13.253;
-  option domain-name-servers 10.0.13.254;
-  option domain-name "serveur_dns13.com";
-  option routers 10.0.13.254;
-  host CLIENT {
-      hardware ethernet 04:8d:38:cf:7e:8a;
-      fixed-address 10.0.13.13;
-   }
- }
-```
-Dans ```/etc/default/isc–dhcp-server``` on rajoute l’interface actuelle ( ici la vlan jaune.13 ) avec la commande
-```
-sudo nano /etc/default/isc-dhcp-server
-```
-Dans le fichier on modifie :
-```
-. . .
-interfacesv4="jaune.13"
-```
-
-On redémarre le service :
-```
-sudo systemctl restart isc-dhcp-server
-```
-
-
 
 
 
