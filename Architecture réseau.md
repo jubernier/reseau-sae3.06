@@ -6,7 +6,7 @@
 
 Ci-dessous un schéma de l’organisation du réseau que vous aurez à mettre en place. Vous choisirez vos noms de machines qui remplaceront ROUTEUR, INTERNE et EXTERNE.
 
-![](Aspose.Words.3043882c-0868-4b50-a159-dc74a3c85fbb.001.png)
+![](img/Aspose.Words.3043882c-0868-4b50-a159-dc74a3c85fbb.001.png)
 
 
 
