@@ -122,18 +122,20 @@ Dans /etc/bind\_sae\_dns13.db on crée un nouveau fichier avec :
 ```
 On rajoute les lignes suivantes :
 ```bash
-@ IN SOA ns13.sae_dns13.com. postmaster.ns13.sae_dns13.com. (
-1 ; Numero de serie, a incrementer a chaque modification
-10800 ; Rafraichissement
-3600 ; Nouvel essai apres 1 heure
-604800 ; Obsolescence apres 1 semaine
-86400 ) ; TTL minimale de 1 jour
+$ttl 38400
+@       IN      SOA     ns13.serveur_dns13.com. postmaster.ns13.sae_dns13.com. (
+                1       ; Numero de serie, a incrementer a chaque modification
+                10800   ; Rafraichissement
+                3600    ; Nouvel essai apres 1 heure
+                604800  ; Obsolescence apres 1 semaine
+                86400 ) ; TTL minimale de 1 jour
 
-IN NS ns13.sae_dns13.com.
-ns13 IN A 10.0.13.254
-www IN CNAME interne.ns13.sae_dns13.com.
-interne IN A 10.0.13.13
-routeur IN A 10.0.13.254
+         IN    NS    ns13.serveur_dns13.com.
+ns13     IN    A     192.168.13.254
+www      IN    CNAME  ns13.serveur_dns13.com.
+routeur  IN    CNAME  ns13.serveur_dns13.com.
+
+
 ```
 
 On redemarre Bind9 :
