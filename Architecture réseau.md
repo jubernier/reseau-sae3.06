@@ -8,8 +8,9 @@ Ci-dessous un schéma de l’organisation du réseau que vous aurez à mettre en
 
 Interne : 10.0.13.13/24 dev jaune.13
 
-Routeur Interne -> 10.0.13.254/24 dev jaune.13
-Routeur Externe -> 192.168.13.254/24 dev jaune
+La machine qui fera office de routeur aura deux adresses :
+  * dans le réseau interne (AKA Routeur Interne) -> 10.0.13.254/24 dev jaune.13
+  * dans le réseau externe (AKA Routeur Externe) -> 192.168.13.254/24 dev jaune
 
 Externe : 192.168.13.1/24 dev jaune
 
@@ -26,7 +27,7 @@ C'est le VLAN qui permettrait plus tard de donner une configuration réseau au c
 
 Nous avons choisi de ne mettre en place *qu'un seul VLAN*, entre INTERNE et Routeur Interne.
 
-Le but ? Obliger les fluxs d'informations ( comme les connexions HTTP ) à passer par le PC du nom de ROUTEUR, simulant le fonctionnement d'un vrai routeur.
+Le but du VLAN ? Obliger les fluxs d'informations ( comme les connexions HTTP ) à passer par le PC du nom de ROUTEUR, simulant le fonctionnement d'un vrai routeur.
 
 Ainsi, une machine extérieur devra passer par routeur pour afficher le site web de notre projet.
 
