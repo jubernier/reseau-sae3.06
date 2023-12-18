@@ -14,6 +14,11 @@ La machine qui fera office de routeur aura deux adresses :
 
 Externe : 192.168.13.1/24 dev jaune
 
+
+|---------|---------|---------|---------|
+| Justine BERNIER | Basma MALKI | Clément PASQUET |
+
+
 ## But 
 
 Le but est de mettre en place **un vlan**, **un serveur DHCP**, pour pouvoir facilement donner une configuration réseau, **un serveur DNS**, pour pouvoir utiliser des noms de domaines, et **un serveur HTTP**, dans le but d'y mettre notre projet de SAE.
@@ -288,11 +293,15 @@ Finalement, nous devons mettre en place des routes pour permettre a des machines
 Toutes ces commandes permettent d'accéder au serveur HTTP, et donc, a notre site web, en passant par le serveur.
 Il est par contre nécessaire, pour toute machine extérieur au réseau, de rajouter [la route correspondante](#lienIpRoute).
 
-Ici nous pouvoir voir les différents paquets envoyés **lorsqu'une machine extérieur au réseau souhaite accéder au serveur HTTP** :
+Ici nous pouvons voir les différents paquets envoyés **lorsqu'une machine extérieur au réseau souhaite accéder au serveur HTTP** :
 <img src="HTTP_ClientaHTTP2.png"  width="700" height="400">
 
-Avant nous avions fait cela avec une requête HTTP. Cependant nous pouvons faire cela avec toutes les requêtes, notamment celles pour ping : 
+<br>
+
+Avant nous avions fait cela avec une requête HTTP. 
+Cependant nous pouvons faire cela avec toutes les requêtes, notamment celles pour ping : 
 <img src="InternAExterne.png"  width="700" height="400">
+
 Nous pouvons voir que les ping se basent sur une méthode de "ping-pong"; les pings sont envoyés, puis ils attendent une réponse.
 
 Cette requête sert à démontrer que **INTERNE peut accéder à l'extérieur**.
@@ -305,3 +314,21 @@ Dans le même principe, voici un capture d'écran supplémentaire qui prouve l'i
 Finalement, voici une capture d'écran montrant les différents paquets envoyés quand *ROUTEUR accède à la page web de INTERNE* :
 <img src="RouterVersInterne.png"  width="700" height="400">
 
+
+## Conclusion
+
+Nous avons vu ensemble comment faire :
+* Un **VLAN** 
+* Un **DHCP**
+* Un **DNS** 
+* Un **Serveur HTTP**
+
+Le VLAN servait à crée un sous réseau virtuel.
+
+Le DHCP permettait de donner une nouvelle configuration réseau, et optionnelement de donner une IP fixe à Interne.
+
+Le DNS nous a permis d'utiliser les noms de domaines.
+
+Le Serveur HTTP nous a donné la possibilité d'accéder à notre SAE via un serveur.
+
+Toutes ces actions ont permis de vraiment rendre accessible notre site Web de SAE et d'améliorer nos compétences en réseau.
