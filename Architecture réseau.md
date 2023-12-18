@@ -6,7 +6,7 @@
 
 Ci-dessous un schéma de l’organisation du réseau que vous aurez à mettre en place. Vous choisirez vos noms de machines qui remplaceront ROUTEUR, INTERNE et EXTERNE.
 
-![](img/Aspose.Words.3043882c-0868-4b50-a159-dc74a3c85fbb.001.png)
+![](Aspose.Words.3043882c-0868-4b50-a159-dc74a3c85fbb.001.png)
 
 
 
@@ -323,9 +323,9 @@ offrant ainsi la possibilité de subdiviser notre réseau physique en sous-rése
 * Un **DHCP** :
 permettant d'automatiser la configuration réseau des périphériques connectés. En outre, nous avons pris avantage de cette fonction pour attribuer une adresse IP fixe à la machine Interne.
 * Un **DNS** : 
-simplifiant l'utilisation des noms de domaine. Plutôt que de mémoriser des adresses IP complexes, les utilisateurs peuvent désormais accéder à des ressources réseau en utilisant des noms simples, améliorant ainsi l'expérience utilisateur.
+simplifiant l'utilisation des noms de domaine, plutôt que de mémoriser des adresses IP complexes, les utilisateurs peuvent désormais accéder à des ressources réseau en utilisant des noms simples, améliorant ainsi l'expérience utilisateur.
 * Un **Serveur HTTP** :
-constituant une étape cruciale pour rendre accessible notre projet de SAE. Grâce à cette configuration, notre site web peut être consulté via un navigateur.
+constituant une étape cruciale pour rendre accessible notre projet de SAE, grâce à cette configuration, notre site web peut être consulté via un navigateur.
 
 En conclusion, notre travail a abouti à la mise en place réussie d'un réseau fonctionnel comprenant un VLAN, un serveur DHCP, un serveur DNS, et enfin, un serveur HTTP permettant l'accès à notre projet de SAE. 
 
