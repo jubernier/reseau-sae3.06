@@ -108,8 +108,17 @@ sudo systemctl restart isc-dhcp-server
 ```
 Nous avons installé et configuré un serveur DHCP (paquet isc-dhcp-server). Celui-ci nous fournira une route par défaut vers la machine ROUTEUR, le nom de domaine, et l’IP du serveur DNS. L'hôte INTERNE doit se voir délivrer une adresse fixe en fonction de son adresse MAC.
 
-Comme nous pouvons l'observez :
-...
+Comme nous pouvons l'observez dans dhcpd.conf :
+```bash
+  option domain-name-servers 10.0.13.254; // IP du serveur DNS
+  option domain-name "serveur_dns13.com"; // Route vers le nom de domaine
+  option routers 10.0.13.254; // Route par défaut vers la machine routeur
+    host CLIENT {
+      hardware ethernet 04:8d:38:cf:7e:8a; // La machine avec CETTE adresse mac 
+      fixed-address 10.0.13.13;            // Récupèrera CETTE IP
+   }
+```
+
 
 ## Pour la partie DNS :
 Le DNS (Domain Name System) est un système qui traduit les noms de domaine en adresses IP, facilitant la navigation sur Internet en utilisant des noms conviviaux au lieu de mémoriser des adresses numériques.
