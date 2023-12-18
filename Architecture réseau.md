@@ -17,14 +17,13 @@ Externe : 192.168.13.1/24 dev jaune
 
 ## Mettre en place la vlan :
 
-Avant de commencer, nous avons mis en place le VLAN, qui permettrait, plus tard, de donner une configuration réseau au client externe grace au serveur DHCP de routeur.
+Avant de commencer, nous avons mis en place le VLAN qui permettrait plus tard de donner une configuration réseau au client externe grace au serveur DHCP de routeur.
 
 Nous avons commencé par charger le module noyau nécessaire en utilisant la commande suivante :
 ```
 modprobe 8021q
 ```
 Cela a permis d'activer le support VLAN dans le noyau
-
 Ensuite, nous avons créé une interface virtuelle VLAN appelée jaune.13 sur la base de l'interface physique jaune. Cette opération a été effectuée avec la commande :
 ```
 ip link add link jaune name jaune.13 type vlan id 13
@@ -33,9 +32,7 @@ Pour activer la nouvelle interface virtuelle VLAN, nous avons exécuté la comma
 ```
 ip link set jaune.13 up
 ```
-Cela a permis de mettre en service l'interface virtuelle VLAN jaune.13.
-
-Chacune des machines connectées au VLAN a ensuite reçu une adresse IP manuellement. 
+Cela a permis de mettre en service l'interface virtuelle VLAN jaune.13. Chacune des machines connectées au VLAN a ensuite reçu une adresse IP manuellement. 
 
 Pour le routeur, nous avons utilisé la commande :
 
@@ -46,30 +43,27 @@ Et pour le client :
 ```
 ip a add 10.0.13.13/4 dev jaune.13
 ```
-Nous pouvons observer que lorsque nous effectuons ```ip a ``` : 
+Nous pouvons ainsi observer que lorsque nous effectuons ```ip a ``` : 
 
 
 ## Pour la partie DHCP :
+## Configuration du Forwarding IP :
 
 En tout premier nous devons activer le forwarding : 
-
-Il faut en premier modifier le fichier de conf. :
+Nous avons commencé par éditer le fichier de configuration ```sysctl``` en utilisant la commande :
 ```
 sudo nano /etc/sysctl.conf
 ```
 
-Nous avons ensuite décommenter la ligne suivante, qui sert à activer l'ip forwarding :
+Nous avons ensuite décommenté la ligne suivante pour activer le forwarding IP :
 ```
 #net.ipv4.ip_forward=1
 ```
-
-
-Puis nous avons recharger le fichier de conf. :
+Puis nous avons recharger le fichier de conf :
 ```
 sysctl -p /etc/sysctl.conf
 ```
-
-Le résultat ressemble à cela :
+Le résultat affiche la nouvelle configuration, notamment avec l'activation du forwarding IP :
 ```bash 
 root@debian:/home/tdreseau# sysctl -p /etc/sysctl.conf
 net.ipv4.ip_forward = 1
@@ -123,7 +117,12 @@ Comme nous pouvons l'observez dans dhcpd.conf :
 ## Pour la partie DNS :
 Le DNS (Domain Name System) est un système qui traduit les noms de domaine en adresses IP, facilitant la navigation sur Internet en utilisant des noms conviviaux au lieu de mémoriser des adresses numériques.
 
-Dans /etc/bind\_sae\_dns13.db on crée un nouveau fichier avec :
+Ajout des permissions avec : 
+```bash 
+sudo chown bind:bind /var/cache/*
+```
+
+Dans /etc/bind/_sae_dns13.db on crée un nouveau fichier avec :
 ```
 /etc/bind/sae_dns13.db
 ```
@@ -157,7 +156,7 @@ sudo systemctl restart bind9
 ```
 On test que ca fonctionne avec la commande suivante :
 ```
-nslookup www.ns13.sae\_dns13.com
+nslookup www.ns13.sae_dns13.com
 ```
 Et maintenant on modified named.conf avec :
 ```
@@ -176,6 +175,17 @@ zone "serveur_dns13.com" in { // déclaration de la zone
 nano /etc/resolv.conf
 ```
 
+Maintenant, nous testons la connexion sur le site :
+```
+sudo systemctl restart bind9
+```
+```
+ns13.serveur_dns13.com
+```
+la sortie en terminal :
+```
+ns13.serveur_dns13.com has address 192.168.13.254
+```
 ## Pour la partie HTTP :
 
 Créer un fichier de configuration : ``` nano /etc/apache2/site-available/monsite.conf ```
@@ -210,5 +220,9 @@ wget https://gitlab.univ-nantes.fr/pub/but/but2/r3.01/r3.01/-/archive/main/r3.01
 Nous allons dans le dossier et copions /app et /system dans /var/www/html :
 ```sudo cp -r \* /var/www/html```
 
+Pour pouvoir tester depuis d'autres pc, il faut etre sur le même vlan, mais aussi il faut faire en sorte de ne pas passer par le proxy ( le proxy refusant de faire passer la requete ) en allant dans les paramètres du navigateur, proxy, et dans les preferences de proxy, rajouter dans "noproxy for" : 
+"10.0.13.0"
 
-
+Pour pouvoir permettre au PC extérieurs d'accéder à la page php, nous devons rediriger le flux port 80 vers la bonne ip : 
+```bash
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
