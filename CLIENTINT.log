@@ -1,0 +1,61 @@
+    1  gsettings set org.gnome.system.proxy mode 'manual'
+    2  gsettings set org.gnome.system.proxy.http host '10.0.0.254'
+    3  gsettings set org.gnome.system.proxy.http port '3128'
+    4  gsettings set org.gnome.system.proxy.https host '10.0.0.254'
+    5  gsettings set org.gnome.system.proxy.https port '3128'
+    6  exit
+    7  ls
+    8  cd Documents/
+    9  ls
+   10  git clone https://gitlab.univ-nantes.fr/E228120G/reseau-sae3.06.git
+   11  ip a
+   12  nano /etc/network/interfaces
+   13  sudo nano /etc/network/interfaces
+   14  ip a add 10.0.13.13/24 dev jaune
+   15  sudo ip a add 10.0.13.13/24 dev jaune
+   16  ip a
+   17  ping 10.0.13.254
+   18  ip a
+   19  systemctl restart
+   20  systemctl restart networking
+   21  sudo systemctl restart networking
+   22  systemctl restart networking
+   23  ip a
+   24  sudo su 
+   25  systemctl apache2 restart 
+   26  systemctl apache2 start 
+   27  service apache2 start 
+   28  service systemctl apache2 start 
+   29  sudo service apache2 restart 
+   30  nano /etc/apache2/sites-available/monsite.conf 
+   31  sudo nano /etc/apache2/sites-available/monsite.conf 
+   32  sudo a2ensite monsite.conf 
+   33  sudo systemctl restart apache2*
+   34  sudo systemctl restart apache2
+   35  sudo systemctl apache2 restart 
+   36  sudo systemctl restart apache2
+   37  systemctl status apache2.service
+   38  sudo systemctl status apache2.service
+   39  sudo /etc/apache2/apache2.conf
+   40  sudo nano /etc/apache2/apache2.conf
+   41  sudo systemctl status apache2.service
+   42  sudo service apache2 restart 
+   43  sudo service apache2 stop
+   44  sudo service apache2 restart 
+   45  sudo nano /etc/apache2/sites-available/monsite.conf 
+   46  ip a
+   47  modprobe 8021q
+   48  sudo modprobe 8021q
+   49  sudo ip link add link jaune name jaune.13 type vlan id 13
+   50  sudo ip link set jaune.13 up
+   51  sudo ip a add 10.0.13.13/4 dev jaune.13
+   52  ip a
+   53  sudo ip a add 10.0.13.13/24 dev jaune.13
+   54  ip a
+   55  sudo ip a del 10.0.13.13/4 dev jaune.13
+   56  ip a
+   57  ping 10.0.13.254
+   58  cd Templates/
+   59  cd ..
+   60  cd Downloads/
+   61  history > CLIENTINT.log
