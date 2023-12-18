@@ -15,8 +15,8 @@ La machine qui fera office de routeur aura deux adresses :
 Externe : 192.168.13.1/24 dev jaune
 
 
-|---------|---------|---------|---------|
 | Justine BERNIER | Basma MALKI | Clément PASQUET |
+|-----------------|-------------|-----------------|
 
 
 ## But 
