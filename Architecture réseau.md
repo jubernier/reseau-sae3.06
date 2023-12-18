@@ -187,12 +187,12 @@ Et enfin :
 ```bash
 systemctl restart apache2
 ```
-Ensuite nous allons télécharger notre mvc grâce à la commande suivante :
+Ensuite nous allons télécharger notre MVC grâce à la commande suivante :
 ```bash
-wget https://gitlab.univ-nantes.fr/pub/but/but2/r3.01/r3.01/-/archive/main/r3 .01-main.zip?path=td/workspace
+wget https://gitlab.univ-nantes.fr/pub/but/but2/r3.01/r3.01/-/archive/main/r3.01-main.zip?path=td/workspace
 ```
-Nous allons dans le dossier et copions /app et /system dans /var/www/html :
 
+Nous allons dans le dossier et copions /app et /system dans /var/www/html :
 ```sudo cp -r \* /var/www/html```
 
 
