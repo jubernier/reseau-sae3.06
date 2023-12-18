@@ -167,25 +167,28 @@ nano /etc/resolv.conf
 Créer un fichier de configuration : ``` nano /etc/apache2/site-available/monsite.conf ```
 Dans le fichier de configuration monsite.conf :
 ```bash
-<VirtualHost \*:80>
-ServerAdmin webmaster@site
-DocumentRoot /var/www/html
-DirectoryIndex index.html
-<Directory /var/www/html>
-    Options Indexes FollowSymLinks AllowOverride None
+<VirtualHost *:80>
+  ServerAdmin webmaster@monsite.com
+  DocumentRoot /var/www/html
+  DirectoryIndex index.html
+  <Directory /var/www/html>
+    Options Indexes FollowSymLinks
     Require all granted
-</Directory>
+  </Directory>
+</VirtualHost>
 ```
 
 Pour pouvoir activer ce site il faut faire la commande :
-```sudo a2ensite monsite.conf```
+```bash
+sudo a2ensite monsite.conf
+```
 
 Et enfin :
-```
+```bash
 systemctl restart apache2
 ```
 Ensuite nous allons télécharger notre mvc grâce à la commande suivante :
-```
+```bash
 wget https://gitlab.univ-nantes.fr/pub/but/but2/r3.01/r3.01/-/archive/main/r3 .01-main.zip?path=td/workspace
 ```
 Nous allons dans le dossier et copions /app et /system dans /var/www/html :
