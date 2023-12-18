@@ -32,7 +32,7 @@ Ainsi, une machine extérieur devra passer par routeur pour afficher le site web
 
 
 En premier, nous avons commencé par charger le module noyau nécessaire, en utilisant la commande suivante :
-```bash
+```shell
 modprobe 8021q
 ```
 Cela a permis <u>d'activer le support du VLAN</u> dans le noyau.
@@ -40,7 +40,7 @@ Cela a permis <u>d'activer le support du VLAN</u> dans le noyau.
 Ensuite, nous créérons une interface de type VLAN appelée jaune.13 sur la base de l'interface physique jaune. 
 
 Cette opération s'effectue avec la commande :
-```bash
+```shell
 ip link add link jaune name jaune.13 type vlan id 13
 ```
 Pour l'utiliser, nous devons activer cette nouvelle interface :
@@ -68,21 +68,21 @@ ip a add 10.0.13.13/24 dev jaune.13
 En tout premier nous devons activer le forwarding, cela permettra aux paquets de "passer" par ROUTEUR :
 
 Nous avons commencé par éditer le fichier de configuration ```sysctl``` en utilisant la commande :
-```bash
+```shell
 sudo nano /etc/sysctl.conf
 ```
 
 Nous avons ensuite décommenté la ligne suivante pour activer le forwarding IP :
-```bash
+```shell
 ...
 #net.ipv4.ip_forward=1
 ```
 Puis nous avons rechargé le fichier de conf :
-```bash
+```shell
 sysctl -p /etc/sysctl.conf
 ```
 Le résultat affiche la nouvelle configuration, notamment avec l'activation du forwarding IP :
-```bash 
+```shell 
 root@debian:/home/tdreseau# sysctl -p /etc/sysctl.conf
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.disable_ipv6 = 1
@@ -94,7 +94,7 @@ net.ipv6.conf.default.autoconf = 0
 1. Modifier le fichier de configuration ```dhcpd.conf``` :
 
 En utilisant ```sudo nano /etc/dhcp/dhcpd.conf```, à la fin du fichier, nous ajoutons la configuration pour le réseau VLAN jaune.13 :
-```bash
+```shell
 subnet 10.0.13.0 netmask 255.255.255.0 {
   range 10.0.13.1 10.0.13.253;
   option domain-name-servers 10.0.13.254;
@@ -134,7 +134,7 @@ L'hôte INTERNE doit se voir délivrer une **adresse fixe** en fonction de son a
 **Nom de domaine** et **IP* à utiliser pour la résolution de noms :   ```option domain-name-servers 10.0.13.254;``` et ```option domain-name "serveur_dns13.com";```.
 
 **Adresse fixe** de INTERNE : 
-```bash
+```shell
   option routers 10.0.13.254; // Route par défaut vers la machine routeur
     host CLIENT {
       hardware ethernet 04:8d:38:cf:7e:8a; // La machine avec CETTE adresse mac 
@@ -144,42 +144,40 @@ L'hôte INTERNE doit se voir délivrer une **adresse fixe** en fonction de son a
 
 
 ## Pour la partie DNS :
-Le DNS (Domain Name System) est un système qui traduit les noms de domaine en adresses IP, facilitant la navigation sur Internet en utilisant des noms conviviaux au lieu de mémoriser des adresses numériques.
+Le DNS (Domain Name Service) est un système qui traduit les noms de domaine en adresses IP, facilitant la navigation sur Internet en utilisant des noms conviviaux au lieu de mémoriser des adresses numériques.
 
-Ajout des permissions avec : 
-```bash 
+Ajout des permissions à ```/var/cache``` avec : 
+```shell 
 sudo chown bind:bind /var/cache/*
 ```
 
-Dans /etc/bind/_sae_dns13.db on crée un nouveau fichier avec :
+Dans ```/etc/bind/sae_dns13.db``` on crée un nouveau fichier avec :
 ```
 /etc/bind/sae_dns13.db
 ```
 On rajoute les lignes suivantes :
-```bash
+```shell
 $ttl 38400
 @       IN      SOA     ns13.serveur_dns13.com. postmaster.ns13.sae_dns13.com. (
-                1       ; Numero de serie, a incrementer a chaque modification
+                1       ; Numero de serie, à incrementer a chaque modification
                 10800   ; Rafraichissement
                 3600    ; Nouvel essai apres 1 heure
                 604800  ; Obsolescence apres 1 semaine
                 86400 ) ; TTL minimale de 1 jour
 
-              IN    NS    ns13.serveur_dns13.com.
-ns13       IN    A     192.168.13.254
-www      IN    CNAME  ns13.serveur_dns13.com.
-routeur   IN    CNAME  ns13.serveur_dns13.com.
-
-
+           IN    NS     ns13.serveur_dns13.com.
+ns13       IN    A      192.168.13.254
+www        IN    CNAME  ns13.serveur_dns13.com.
+routeur    IN    CNAME  ns13.serveur_dns13.com.
 ```
 
-* La première section (@ IN SOA...) est l'enregistrement de la zone qui spécifie les informations sur le domaine.
-* IN NS ns13.sae_dns13.com -> déclare le serveur de noms principal pour la zone.
-* ns13 IN A 10.0.13.254 -> spécifie l'adresse IP du serveur.
-* www IN CNAME interne.ns13.sae_dns13.com -> crée un alias (CNAME) pour le nom www, pointant vers interne.ns13.sae_dns13.com.
-* interne IN A 10.0.13.13 et routeur IN A 10.0.13.254 -> définissent les adresses IP d'autres hôtes.
+* La première section (```@ IN SOA...```) est l'enregistrement de la zone qui spécifie les *informations sur le domaine*.
+* ```IN NS ns13.serveur_dns13.com``` -> déclare le *serveur de noms* principal pour la zone.
+* ```ns13 IN A 10.0.13.254``` -> spécifie *l'adresse IP du serveur*.
+* ```www IN CNAME interne.ns13.serveur_dns13.com``` -> crée *un alias* (CNAME) pour le nom www, pointant vers interne.ns13.sae_dns13.com.
+* ```interne IN A 10.0.13.13``` et ```routeur IN A 10.0.13.254``` -> définissent les *adresses IP d'autres hôtes*.
 
-Nous avons redemaré le service BIND, cela permet d'appliquer les modifications apportées au fichier de zone.
+Nous avons redemmaré le service BIND, cela permet d'appliquer les modifications apportées au fichier de zone.
 ```
 sudo systemctl restart bind9
 ```
@@ -187,34 +185,39 @@ On test que ca fonctionne avec la commande suivante :
 ```
 nslookup www.ns13.sae_dns13.com
 ```
-Nous avons édité le fichier named.conf pour inclure la nouvelle zone serveur_dns13.com :
+Nous éditons le fichier named.conf pour inclure la nouvelle zone serveur_dns13.com :
 ```
 sudo nano /etc/bind/named.conf
 ```
 On modifie le fichier pour rajouter une nouvelle zone :
-```bash
+```shell
+...
 include "/etc/bind/named.conf.options"; include "/etc/bind/named.conf.local"; include "/etc/bind/named.conf.default-zones";
 
 zone "serveur_dns13.com" in { // déclaration de la zone
 
   type master; // déclaration type maître
-  file "/var/cache/bind/sae_dns13.db";// on indique le fichier contena$ };
+  file "/var/cache/bind/sae_dns13.db"; // Chemin du fichier };
 ```
-```
-nano /etc/resolv.conf
+
+Rajout du nom de domaine sur les **autres** PC avec ```nano /etc/resolv.conf``` : 
+```shell 
+...
+nameserver 10.0.13.254
 ```
 
 Nous redémarrons le service BIND et utilisons la commande suivante pour tester la connexion au site :
-```
+```shell
 sudo systemctl restart bind9
 ```
+```shell
+nslookup www.ns13.sae_dns13.com
 ```
-ns13.serveur_dns13.com
-```
-La sortie en terminal affiche :
-```
+La sortie terminal devrait afficher :
+```shell
 ns13.serveur_dns13.com has address 192.168.13.254
 ```
+
 ## Pour la partie HTTP :
 
 Nous avons créé un fichier de configuration pour notre site monsite.conf avec la commande suivante :
@@ -222,7 +225,7 @@ Nous avons créé un fichier de configuration pour notre site monsite.conf avec 
  nano /etc/apache2/site-available/monsite.conf 
  ```
 Dans le fichier de configuration monsite.conf :
-```bash
+```shell
 <VirtualHost *:80>
   ServerAdmin webmaster@monsite.com
   DocumentRoot /var/www/html
@@ -237,16 +240,16 @@ Dans le fichier de configuration monsite.conf :
 Nous avons configuré un virtual host pour écouter sur le port 80, défini le répertoire racine, et spécifié certaines options pour le répertoire.
 
 Nous avons activé le site en utilisant la commande :
-```bash
+```shell
 sudo a2ensite monsite.conf
 ```
 
 Et enfin nous avons redémarré le service Apache :
-```bash
+```shell
 systemctl restart apache2
 ```
 Ensuite nous allons télécharger notre MVC grâce à la commande suivante :
-```bash
+```shell
 wget https://gitlab.univ-nantes.fr/pub/but/but2/r3.01/r3.01/-/archive/main/r3.01-main.zip?path=td/workspace
 ```
 
@@ -259,7 +262,7 @@ Pour pouvoir tester depuis d'autres pc, il faut etre sur le même vlan, mais aus
 ```
 
 Pour pouvoir permettre au PC extérieurs d'accéder à la page php, nous devons rediriger le flux port 80 vers la bonne ip : 
-```bash
+```shell
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
 ```
 
