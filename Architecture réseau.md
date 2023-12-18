@@ -270,7 +270,8 @@ Pour pouvoir permettre au PC extérieurs d'accéder à la page PHP, nous devons 
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
 ```
 
-![Image Preferences A mettre dans navigateur](proxy_preferences.png)
+<img src="proxy_preferences.png" alt="Image Preferences A mettre dans navigateur" width="500" height="600">
+
 
 Finalement, nous devons mettre en place des routes pour permettre a des machines extérieurs d'acceder a notre serveur HTTP : 
 ```ip route add 192.168.13.0/24 via 192.168.13.254```
@@ -285,5 +286,5 @@ Finalement, nous devons mettre en place des routes pour permettre a des machines
 Toutes ces commandes permettent d'accéder au serveur HTTP, et donc, a notre site web, en passant par le serveur.
 Il est par contre nécessaire, pour toute machine extérieur au réseau, de rajouter [la route correspondante](#lienIpRoute).
 
-![Image d'Illustration du site web](website_view.png)
+<img src="website_view.png" alt="Image d'Illustration du site web" width="500" height="600">
 
