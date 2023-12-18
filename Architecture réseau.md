@@ -26,7 +26,7 @@ C'est le VLAN qui permettrait plus tard de donner une configuration réseau au c
 
 Nous avons choisi de ne mettre en place *qu'un seul VLAN*, entre INTERNE et Routeur Interne.
 
-Le but ? Obliger les fluxs d'informations ( comme les connexions http ) à passer par le PC du nom de ROUTEUR, simulant le fonctionnement d'un vrai routeur.
+Le but ? Obliger les fluxs d'informations ( comme les connexions HTTP ) à passer par le PC du nom de ROUTEUR, simulant le fonctionnement d'un vrai routeur.
 
 Ainsi, une machine extérieur devra passer par routeur pour afficher le site web de notre projet.
 
@@ -35,7 +35,7 @@ En premier, nous avons commencé par charger le module noyau nécessaire, en uti
 ```bash
 modprobe 8021q
 ```
-Cela a permis d'activer le support du VLAN dans le noyau.
+Cela a permis <u>d'activer le support du VLAN</u> dans le noyau.
 
 Ensuite, nous créérons une interface de type VLAN appelée jaune.13 sur la base de l'interface physique jaune. 
 
@@ -60,13 +60,13 @@ Et pour le client :
 ```
 ip a add 10.0.13.13/24 dev jaune.13
 ```
-Nous pouvons ainsi observer que lorsque nous effectuons ```ip a ``` : 
 
 
 ## Pour la partie DHCP :
 ### Configuration du Forwarding IP :
 
-En tout premier nous devons activer le forwarding, cela permettra aux paquets de "passer" par ROUTEUR : 
+En tout premier nous devons activer le forwarding, cela permettra aux paquets de "passer" par ROUTEUR :
+
 Nous avons commencé par éditer le fichier de configuration ```sysctl``` en utilisant la commande :
 ```bash
 sudo nano /etc/sysctl.conf
@@ -91,14 +91,9 @@ net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.default.autoconf = 0
 ```
 ## Configuration du Serveur DHCP :
-1. Modifier le fichier de configuration dhcpd.conf :
+1. Modifier le fichier de configuration ```dhcpd.conf``` :
 
-En utilisant la commande :
-
-```
-sudo nano /etc/dhcp/dhcpd.conf
-```
-À la fin du fichier, nous avons ajouté la configuration pour le réseau VLAN jaune.13 :
+En utilisant ```sudo nano /etc/dhcp/dhcpd.conf```, à la fin du fichier, nous ajoutons la configuration pour le réseau VLAN jaune.13 :
 ```bash
 subnet 10.0.13.0 netmask 255.255.255.0 {
   range 10.0.13.1 10.0.13.253;
@@ -111,31 +106,33 @@ subnet 10.0.13.0 netmask 255.255.255.0 {
    }
  }
 ```
-Cela définit la plage d'adresses IP attribuables, les serveurs DNS, le nom de domaine, les routeurs et les configurations spécifiques à l'hôte CLIENT.
+Cela définit la **plage d'adresses IP attribuables**, le **serveur DNS**, le **nom de domaine**, le **routeur** et les **configurations spécifiques à l'hôte CLIENT**.
 
-2. Modifier le fichier de configuration isc-dhcp-server :
+2. Modifier le fichier de configuration **isc-dhcp-server** :
 
-En utilisant la commande
-```
-sudo nano /etc/default/isc-dhcp-server
-``` 
-Nous avons rajouter l'interface avec laquel nous voudrons recuperer notre configuration réseau, dans notre cas le VLAN donc jaune.13. Dans le fichier on modifie :
+En utilisant la commande ```sudo nano /etc/default/isc-dhcp-server```, nous rajoutons l'interface avec laquel nous voudrons récuperer notre configuration réseau, dans notre cas jaune.13, le VLAN. 
+
+Dans le fichier on rajoute l'interface voulue :
 ```
 . . .
 interfacesv4="jaune.13"
 ```
 3. Redémarrer le service DHCP :
 
-Après avoir effectué ces modifications, nous avons redémarré le service DHCP pour appliquer les changements :
+Après avoir effectué ces modifications, nous avons redemarrons le service DHCP pour appliquer les changements :
 ```
-sudo systemctl restart isc-dhcp-server
+systemctl restart isc-dhcp-server
 ```
-Nous avons installé et configuré un serveur DHCP (paquet isc-dhcp-server). Celui-ci nous fournira une route par défaut vers la machine ROUTEUR, le nom de domaine, et l’IP du serveur DNS. L'hôte INTERNE doit se voir délivrer une adresse fixe en fonction de son adresse MAC.
+Nous avons installé et configuré un serveur DHCP (paquet isc-dhcp-server). 
 
-Comme nous pouvons l'observez dans dhcpd.conf :
+Celui-ci nous fournira une **route par défaut** vers la machine ROUTEUR, le **nom de domaine**, et **l’IP du serveur DNS**. 
+
+L'hôte INTERNE doit se voir délivrer une **adresse fixe** en fonction de son adresse MAC.
+
+**Routeur par défaut :** : ```option routers 10.0.13.254;```
+**Nom de domaine** et **IP* à utiliser pour la résolution de noms :   ```option domain-name-servers 10.0.13.254;``` et ```option domain-name "serveur_dns13.com";```.
+**Adresse fixe** de INTERNE : 
 ```bash
-  option domain-name-servers 10.0.13.254; // IP du serveur DNS
-  option domain-name "serveur_dns13.com"; // Route vers le nom de domaine
   option routers 10.0.13.254; // Route par défaut vers la machine routeur
     host CLIENT {
       hardware ethernet 04:8d:38:cf:7e:8a; // La machine avec CETTE adresse mac 
