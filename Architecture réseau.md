@@ -129,6 +129,34 @@ ip a add 10.0.13.13/4 dev jaune.13
 ```
 Pour la partie DHCP :
 
+En tout premier nous devons activer le forwarding : 
+
+Il faut en premier modifier le fichier de conf. :
+```
+sudo nano /etc/sysctl.conf
+```
+
+Il faut ensuite décommenter la ligne suivante, qui sert à activer l'ip forwarding :
+```
+#net.ipv4.ip_forward=1
+```
+
+
+Puis il faut recharger le fichier de conf. :
+```
+sysctl -p /etc/sysctl.conf
+```
+
+le résultat devrait ressemblé à cela :
+```bash 
+root@debian:/home/tdreseau# sysctl -p /etc/sysctl.conf
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.all.autoconf = 0
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.default.autoconf = 0
+```
+
 Avec la commande ```sudo nano /etc/dhcp/dhcpd.conf```, à la fin du fichier, nous rajoutons :
 ```bash
 subnet 10.0.13.0 netmask 255.255.255.0 {
@@ -159,18 +187,5 @@ sudo systemctl restart isc-dhcp-server
 
 
 
-### DHCP
 
-forwarding
 
-```
-sudo nano /etc/sysctl.conf
-```
-
-nous avons décommentez la ligne pour le ipv4
-
-ensuite :
-```
-sysctl -p /etc/sysctl.conf
-```
-le résultat devrait ressemblé à cela :
