@@ -6,7 +6,7 @@
 
 Ci-dessous un schéma de l’organisation du réseau que vous aurez à mettre en place. Vous choisirez vos noms de machines qui remplaceront ROUTEUR, INTERNE et EXTERNE.
 
-![](Aspose.Words.3043882c-0868-4b50-a159-dc74a3c85fbb.001.png)
+![](img/Aspose.Words.3043882c-0868-4b50-a159-dc74a3c85fbb.001.png)
 
 
 
@@ -275,7 +275,7 @@ Pour pouvoir permettre au PC extérieurs d'accéder à la page PHP, nous devons 
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
 ```
 
-<img src="proxy_preferences.png" alt="Image Preferences A mettre dans navigateur" width="500" height="600">
+<img src="img/proxy_preferences.png" alt="Image Preferences A mettre dans navigateur" width="500" height="600">
 
 
 Finalement, nous devons mettre en place des routes pour permettre a des machines extérieurs d'acceder a notre serveur HTTP : 
@@ -288,19 +288,19 @@ Finalement, nous devons mettre en place des routes pour permettre a des machines
 <a id="lienIpRoute">```ip route add 10.0.13.0/24 via 192.168.13.254```</a>
 ( sur la machine extérieur )
 
-<img src="website_view.png" alt="Image d'Illustration du site web" width="500" height="600">
+<img src="img/website_view.png" alt="Image d'Illustration du site web" width="500" height="600">
 
 Toutes ces commandes permettent d'accéder au serveur HTTP, et donc, a notre site web, en passant par le serveur.
 Il est par contre nécessaire, pour toute machine extérieur au réseau, de rajouter [la route correspondante](#lienIpRoute).
 
 Ici nous pouvons voir les différents paquets envoyés **lorsqu'une machine extérieur au réseau souhaite accéder au serveur HTTP** :
-<img src="HTTP_ClientaHTTP2.png"  width="700" height="400">
+<img src="img/HTTP_ClientaHTTP2.png"  width="700" height="400">
 
 <br>
 
 Avant nous avions fait cela avec une requête HTTP. 
 Cependant nous pouvons faire cela avec toutes les requêtes, notamment celles pour ping : 
-<img src="InternAExterne.png"  width="700" height="400">
+<img src="img/InternAExterne.png"  width="700" height="400">
 
 Nous pouvons voir que les ping se basent sur une méthode de "ping-pong"; les pings sont envoyés, puis ils attendent une réponse.
 
@@ -309,10 +309,10 @@ Cette requête sert à démontrer que **INTERNE peut accéder à l'extérieur**.
 <br>
 
 Dans le même principe, voici un capture d'écran supplémentaire qui prouve l'inverse, *une machine extérieur peut accéder à INTERNE* :
-<img src="ExterneAInterne.png"  width="700" height="400">
+<img src="img/ExterneAInterne.png"  width="700" height="400">
 
 Finalement, voici une capture d'écran montrant les différents paquets envoyés quand *ROUTEUR accède à la page web de INTERNE* :
-<img src="RouterVersInterne.png"  width="700" height="400">
+<img src="img/RouterVersInterne.png"  width="700" height="400">
 
 
 ## Conclusion
