@@ -1,4 +1,3 @@
-
 | Justine BERNIER | Basma MALKI | Clément PASQUET |
 |-----------------|-------------|-----------------|
 
@@ -318,18 +317,16 @@ Finalement, voici une capture d'écran montrant les différents paquets envoyés
 
 ## Conclusion
 
-Nous avons vu ensemble comment faire :
-* Un **VLAN** 
-* Un **DHCP**
-* Un **DNS** 
-* Un **Serveur HTTP**
+Ensemble, nous avons exploré la mise en place de différentes composantes essentielles : 
+* Un **VLAN** : 
+offrant ainsi la possibilité de diviser notre réseau physique en sous-réseaux virtuels.
+* Un **DHCP** :
+permettant de donner une nouvelle configuration réseau, ainsi que de donner une IP fixe à Interne.
+* Un **DNS** : 
+ simplifiant l'utilisation des noms de domaine.
+* Un **Serveur HTTP** :
+nous donnant la possibilité d'accéder à notre SAE via un serveur. 
 
-Le VLAN servait à crée un sous réseau virtuel.
+En conclusion, notre travail a abouti à la mise en place réussie d'un réseau fonctionnel comprenant un VLAN, un serveur DHCP, un serveur DNS, et enfin, un serveur HTTP permettant l'accès à notre projet de SAE. 
 
-Le DHCP permettait de donner une nouvelle configuration réseau, et optionnelement de donner une IP fixe à Interne.
-
-Le DNS nous a permis d'utiliser les noms de domaines.
-
-Le Serveur HTTP nous a donné la possibilité d'accéder à notre SAE via un serveur.
-
-Toutes ces actions ont permis de vraiment rendre accessible notre site Web de SAE et d'améliorer nos compétences en réseau.
+*Ces étapes ont renforcé l'accessibilité de notre site web et ont constitué une opportunité d'améliorer nos compétences en gestion réseau.*
