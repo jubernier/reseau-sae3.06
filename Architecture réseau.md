@@ -6,61 +6,79 @@ Ci-dessous un schéma de l’organisation du réseau que vous aurez à mettre en
 
 
 
-Interne : 10.0.13.13/24 dev jaune
+Interne : 10.0.13.13/24 dev jaune.13
 
-Routeur : 
-* ip réseau interne -> 10.0.13.254/24 dev jaune 
-* ip réseau externe -> 192.168.13.254/24 dev jaune
+Routeur Interne -> 10.0.13.254/24 dev jaune.13
+Routeur Externe -> 192.168.13.254/24 dev jaune
 
 Externe : 192.168.13.1/24 dev jaune
 
+## But 
 
-## Mettre en place la vlan :
+Le but est de mettre en place **un vlan**, **un serveur DHCP**, pour pouvoir facilement donner une configuration réseau, **un serveur DNS**, pour pouvoir utiliser des noms de domaines, et **un serveur HTTP**, dans le but d'y mettre notre projet de SAE.
 
-Avant de commencer, nous avons mis en place le VLAN qui permettrait plus tard de donner une configuration réseau au client externe grace au serveur DHCP de routeur.
 
-Nous avons commencé par charger le module noyau nécessaire en utilisant la commande suivante :
-```
+## Mettre en place le VLAN :
+
+Avant de commencer, nous devons mettre en place le VLAN.
+
+C'est le VLAN qui permettrait plus tard de donner une configuration réseau au client externe grace au serveur DHCP de routeur.
+
+Nous avons choisi de ne mettre en place *qu'un seul VLAN*, entre INTERNE et Routeur Interne.
+
+Le but ? Obliger les fluxs d'informations ( comme les connexions http ) à passer par le PC du nom de ROUTEUR, simulant le fonctionnement d'un vrai routeur.
+
+Ainsi, une machine extérieur devra passer par routeur pour afficher le site web de notre projet.
+
+
+En premier, nous avons commencé par charger le module noyau nécessaire, en utilisant la commande suivante :
+```bash
 modprobe 8021q
 ```
-Cela a permis d'activer le support VLAN dans le noyau
-Ensuite, nous avons créé une interface virtuelle VLAN appelée jaune.13 sur la base de l'interface physique jaune. Cette opération a été effectuée avec la commande :
-```
+Cela a permis d'activer le support du VLAN dans le noyau.
+
+Ensuite, nous créérons une interface de type VLAN appelée jaune.13 sur la base de l'interface physique jaune. 
+
+Cette opération s'effectue avec la commande :
+```bash
 ip link add link jaune name jaune.13 type vlan id 13
 ```
-Pour activer la nouvelle interface virtuelle VLAN, nous avons exécuté la commande suivante :
-```
+Pour l'utiliser, nous devons activer cette nouvelle interface :
+```shell
 ip link set jaune.13 up
 ```
-Cela a permis de mettre en service l'interface virtuelle VLAN jaune.13. Chacune des machines connectées au VLAN a ensuite reçu une adresse IP manuellement. 
+Cela permet de mettre en service l'interface VLAN jaune.13. 
+
+Chacune des machines connectées au VLAN doit recevoir une adresse IP *manuellement*. 
 
 Pour le routeur, nous avons utilisé la commande :
 
 ```
-ip a add 10.0.13.254/4 dev jaune.13
+ip a add 10.0.13.254/24 dev jaune.13
 ```
 Et pour le client :
 ```
-ip a add 10.0.13.13/4 dev jaune.13
+ip a add 10.0.13.13/24 dev jaune.13
 ```
 Nous pouvons ainsi observer que lorsque nous effectuons ```ip a ``` : 
 
 
 ## Pour la partie DHCP :
-## Configuration du Forwarding IP :
+### Configuration du Forwarding IP :
 
-En tout premier nous devons activer le forwarding : 
+En tout premier nous devons activer le forwarding, cela permettra aux paquets de "passer" par ROUTEUR : 
 Nous avons commencé par éditer le fichier de configuration ```sysctl``` en utilisant la commande :
-```
+```bash
 sudo nano /etc/sysctl.conf
 ```
 
 Nous avons ensuite décommenté la ligne suivante pour activer le forwarding IP :
-```
+```bash
+...
 #net.ipv4.ip_forward=1
 ```
-Puis nous avons recharger le fichier de conf :
-```
+Puis nous avons rechargé le fichier de conf :
+```bash
 sysctl -p /etc/sysctl.conf
 ```
 Le résultat affiche la nouvelle configuration, notamment avec l'activation du forwarding IP :
