@@ -1,3 +1,8 @@
+
+| Justine BERNIER | Basma MALKI | Clément PASQUET |
+|-----------------|-------------|-----------------|
+
+
 **Travail à réaliser**
 
 Ci-dessous un schéma de l’organisation du réseau que vous aurez à mettre en place. Vous choisirez vos noms de machines qui remplaceront ROUTEUR, INTERNE et EXTERNE.
@@ -13,10 +18,6 @@ La machine qui fera office de routeur aura deux adresses :
   * dans le réseau externe (AKA Routeur Externe) -> 192.168.13.254/24 dev jaune
 
 Externe : 192.168.13.1/24 dev jaune
-
-
-| Justine BERNIER | Basma MALKI | Clément PASQUET |
-|-----------------|-------------|-----------------|
 
 
 ## But 
