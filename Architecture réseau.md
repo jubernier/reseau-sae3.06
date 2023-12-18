@@ -72,8 +72,15 @@ net.ipv6.conf.all.autoconf = 0
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.default.autoconf = 0
 ```
+## Configuration du Serveur DHCP :
+1. Modifier le fichier de configuration dhcpd.conf :
 
-Avec la commande ```sudo nano /etc/dhcp/dhcpd.conf```, à la fin du fichier, nous rajoutons :
+En utilisant la commande :
+
+```
+sudo nano /etc/dhcp/dhcpd.conf
+```
+À la fin du fichier, nous avons ajouté la configuration pour le réseau VLAN jaune.13 :
 ```bash
 subnet 10.0.13.0 netmask 255.255.255.0 {
   range 10.0.13.1 10.0.13.253;
@@ -86,17 +93,22 @@ subnet 10.0.13.0 netmask 255.255.255.0 {
    }
  }
 ```
-Dans ```/etc/default/isc–dhcp-server``` nous rajoutons l'interface avec laquel nous voudrons recuperer notre configuration réseau, dans notre cas le VLAN donc jaune.13 :
+Cela définit la plage d'adresses IP attribuables, les serveurs DNS, le nom de domaine, les routeurs et les configurations spécifiques à l'hôte CLIENT.
+
+2. Modifier le fichier de configuration isc-dhcp-server :
+
+En utilisant la commande
 ```
 sudo nano /etc/default/isc-dhcp-server
-```
-Dans le fichier on modifie :
+``` 
+Nous avons rajouter l'interface avec laquel nous voudrons recuperer notre configuration réseau, dans notre cas le VLAN donc jaune.13. Dans le fichier on modifie :
 ```
 . . .
 interfacesv4="jaune.13"
 ```
+3. Redémarrer le service DHCP :
 
-Nous redémarrons le service :
+Après avoir effectué ces modifications, nous avons redémarré le service DHCP pour appliquer les changements :
 ```
 sudo systemctl restart isc-dhcp-server
 ```
@@ -150,7 +162,7 @@ routeur   IN    CNAME  ns13.serveur_dns13.com.
 * www IN CNAME interne.ns13.sae_dns13.com -> crée un alias (CNAME) pour le nom www, pointant vers interne.ns13.sae_dns13.com.
 * interne IN A 10.0.13.13 et routeur IN A 10.0.13.254 -> définissent les adresses IP d'autres hôtes.
 
-On redemarre le service BIND pour appliquer les modifications.:
+Nous avons redemaré le service BIND, cela permet d'appliquer les modifications apportées au fichier de zone.
 ```
 sudo systemctl restart bind9
 ```
@@ -158,7 +170,7 @@ On test que ca fonctionne avec la commande suivante :
 ```
 nslookup www.ns13.sae_dns13.com
 ```
-Et maintenant on modified named.conf avec :
+Nous avons édité le fichier named.conf pour inclure la nouvelle zone serveur_dns13.com :
 ```
 sudo nano /etc/bind/named.conf
 ```
@@ -175,20 +187,23 @@ zone "serveur_dns13.com" in { // déclaration de la zone
 nano /etc/resolv.conf
 ```
 
-Maintenant, nous testons la connexion sur le site :
+Nous redémarrons le service BIND et utilisons la commande suivante pour tester la connexion au site :
 ```
 sudo systemctl restart bind9
 ```
 ```
 ns13.serveur_dns13.com
 ```
-la sortie en terminal :
+La sortie en terminal affiche :
 ```
 ns13.serveur_dns13.com has address 192.168.13.254
 ```
 ## Pour la partie HTTP :
 
-Créer un fichier de configuration : ``` nano /etc/apache2/site-available/monsite.conf ```
+Nous avons créé un fichier de configuration pour notre site monsite.conf avec la commande suivante :
+ ``` 
+ nano /etc/apache2/site-available/monsite.conf 
+ ```
 Dans le fichier de configuration monsite.conf :
 ```bash
 <VirtualHost *:80>
@@ -202,13 +217,14 @@ Dans le fichier de configuration monsite.conf :
   </Directory>
 </VirtualHost>
 ```
+Nous avons configuré un virtual host pour écouter sur le port 80, défini le répertoire racine, et spécifié certaines options pour le répertoire.
 
-Pour pouvoir activer ce site il faut faire la commande :
+Nous avons activé le site en utilisant la commande :
 ```bash
 sudo a2ensite monsite.conf
 ```
 
-Et enfin :
+Et enfin nous avons redémarré le service Apache :
 ```bash
 systemctl restart apache2
 ```
@@ -220,8 +236,10 @@ wget https://gitlab.univ-nantes.fr/pub/but/but2/r3.01/r3.01/-/archive/main/r3.01
 Nous allons dans le dossier et copions /app et /system dans /var/www/html :
 ```sudo cp -r \* /var/www/html```
 
-Pour pouvoir tester depuis d'autres pc, il faut etre sur le même vlan, mais aussi il faut faire en sorte de ne pas passer par le proxy ( le proxy refusant de faire passer la requete ) en allant dans les paramètres du navigateur, proxy, et dans les preferences de proxy, rajouter dans "noproxy for" : 
-"10.0.13.0"
+Pour pouvoir tester depuis d'autres pc, il faut etre sur le même vlan, mais aussi il faut faire en sorte de ne pas passer par le proxy ( le proxy refusant de faire passer la requete ). Dans les préférences du proxy, nous avons rajouté dans 
+```
+"noproxy for" : "10.0.13.13"
+```
 
 Pour pouvoir permettre au PC extérieurs d'accéder à la page php, nous devons rediriger le flux port 80 vers la bonne ip : 
 ```bash
