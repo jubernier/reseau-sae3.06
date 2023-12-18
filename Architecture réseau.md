@@ -154,11 +154,10 @@ On modifie le fichier pour rajouter une nouvelle zone :
 ```bash
 include "/etc/bind/named.conf.options"; include "/etc/bind/named.conf.local"; include "/etc/bind/named.conf.default-zones";
 
-zone "ns13.sae\_dns13.com" in { // déclaration de la zone
+zone "serveur_dns13.com" in { // déclaration de la zone
 
-type master; // déclaration type maître
-
-file "/var/cache/bind/sae\_dns13.db"; // on indique le fichier contena$ };
+  type master; // déclaration type maître
+  file "/var/cache/bind/sae_dns13.db";// on indique le fichier contena$ };
 ```
 ```
 nano /etc/resolv.conf
