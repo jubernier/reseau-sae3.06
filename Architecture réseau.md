@@ -317,15 +317,15 @@ Finalement, voici une capture d'écran montrant les différents paquets envoyés
 
 ## Conclusion
 
-Ensemble, nous avons exploré la mise en place de différentes composantes essentielles : 
+En ensemble, nous avons exploré la mise en place de différentes composantes essentielles : 
 * Un **VLAN** : 
-offrant ainsi la possibilité de diviser notre réseau physique en sous-réseaux virtuels.
+offrant ainsi la possibilité de subdiviser notre réseau physique en sous-réseaux virtuels distincts.
 * Un **DHCP** :
-permettant de donner une nouvelle configuration réseau, ainsi que de donner une IP fixe à Interne.
+permettant d'automatiser la configuration réseau des périphériques connectés. En outre, nous avons pris avantage de cette fonction pour attribuer une adresse IP fixe à la machine Interne.
 * Un **DNS** : 
- simplifiant l'utilisation des noms de domaine.
+simplifiant l'utilisation des noms de domaine. Plutôt que de mémoriser des adresses IP complexes, les utilisateurs peuvent désormais accéder à des ressources réseau en utilisant des noms simples, améliorant ainsi l'expérience utilisateur.
 * Un **Serveur HTTP** :
-nous donnant la possibilité d'accéder à notre SAE via un serveur. 
+constituant une étape cruciale pour rendre accessible notre projet de SAE. Grâce à cette configuration, notre site web peut être consulté via un navigateur, offrant une interface agréable et permettant l'interaction avec notre application.
 
 En conclusion, notre travail a abouti à la mise en place réussie d'un réseau fonctionnel comprenant un VLAN, un serveur DHCP, un serveur DNS, et enfin, un serveur HTTP permettant l'accès à notre projet de SAE. 
 
