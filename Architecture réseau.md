@@ -12,6 +12,8 @@ Choisissez un nom de domaine dans .com. Votre serveur DNS gérera a minima les n
 
 Mettez en place un VLAN sur la partie privée de votre réseau.
 
+**DHCP**
+
 Installez et configurez un serveur DHCP (paquet isc-dhcp-server). Celui-ci fournira une route par défaut vers la machine ROUTEUR, le nom de domaine, et l’IP du serveur DNS. L'hôte CLIENT doit se voir délivrer une adresse fixe en fonction de son adresse MAC.
 
 **HTTP Autre**
