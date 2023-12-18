@@ -1,4 +1,4 @@
-﻿**Travail à réaliser**
+**Travail à réaliser**
 
 Ci-dessous un schéma de l’organisation du réseau que vous aurez à mettre en place. Vous choisirez vos noms de machines qui remplaceront ROUTEUR, INTERNE et EXTERNE.
 
@@ -131,16 +131,16 @@ Pour la partie DHCP :
 
 Avec la commande ```sudo nano /etc/dhcp/dhcpd.conf```, à la fin du fichier, nous rajoutons :
 ```bash
-//subnet 10.0.13.0 netmask 255.255.255.0 {
-//  range 10.0.13.1 10.0.13.253;
-//  option domain-name-serveurs 10.0.13.254;
-//  option domain-name "serveur_dns13.com";
-//  option routers 10.0.13.254;
-//  host CLIENT {
-//      hardware ethernet 04:8d:38:cf:7e:8a;
-//      fixed-address 10.0.13.13;
-//   }
-// }
+subnet 10.0.13.0 netmask 255.255.255.0 {
+  range 10.0.13.1 10.0.13.253;
+  option domain-name-servers 10.0.13.254;
+  option domain-name "serveur_dns13.com";
+  option routers 10.0.13.254;
+  host CLIENT {
+      hardware ethernet 04:8d:38:cf:7e:8a;
+      fixed-address 10.0.13.13;
+   }
+ }
 ```
 Dans ```/etc/default/isc–dhcp-server``` on rajoute l’interface actuelle ( ici la vlan jaune.13 ) avec la commande
 ```
@@ -151,3 +151,26 @@ Dans le fichier on modifie :
 . . .
 interfacesv4="jaune.13"
 ```
+
+On redémarre le service :
+```
+sudo systemctl restart isc-dhcp-server
+```
+
+
+
+### DHCP
+
+forwarding
+
+```
+sudo nano /etc/sysctl.conf
+```
+
+nous avons décommentez la ligne pour le ipv4
+
+ensuite :
+```
+sysctl -p /etc/sysctl.conf
+```
+le résultat devrait ressemblé à cela :
