@@ -414,3 +414,15 @@
   414  ls
   415  cd Downloads/
   416  history > ROUTEUR.log
+  417  history | grep "route
+  418  history | grep "route"
+  419  history | grep "ip route"
+  420  history | grep "ip r"
+  421  ip route add 10.0.13.13 via 10.0.13.254
+  422  ip route del 10.0.13.13 via 10.0.13.254
+  423  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  424  ip route add 192.168.13.0/24 via 192.168.13.254
+  425  ip route add 192.168.13.0/24 via 10.0.13.254
+  426  p r
+  427  ip r
+  428  history > ROUTEUR.log
