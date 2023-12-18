@@ -173,6 +173,7 @@ Dans le fichier de configuration monsite.conf :
   DirectoryIndex index.html
   <Directory /var/www/html>
     Options Indexes FollowSymLinks
+    AllowOverride All
     Require all granted
   </Directory>
 </VirtualHost>
