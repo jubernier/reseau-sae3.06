@@ -59,3 +59,6 @@
    59  cd ..
    60  cd Downloads/
    61  history > CLIENTINT.log
+   62  sudo ip route add 192.168.13.0/24 via 10.0.13.254
+   63  ping 192.168.13.1
+   64  history > CLIENTINT.log
