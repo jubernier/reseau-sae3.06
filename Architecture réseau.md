@@ -123,7 +123,7 @@ Dans /etc/bind\_sae\_dns13.db on crée un nouveau fichier avec :
 On rajoute les lignes suivantes :
 ```bash
 $ttl 38400
-@       IN      SOA     ns13.serveur_dns13.com. postmaster.ns13.sae_dns13.com. (
+@       IN      SOA     ns13.serveur_dns13.com. postmaster.ns13.serveur_dns13.com. (
                 1       ; Numero de serie, a incrementer a chaque modification
                 10800   ; Rafraichissement
                 3600    ; Nouvel essai apres 1 heure
