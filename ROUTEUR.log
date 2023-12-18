@@ -1,0 +1,416 @@
+    1  history 
+    2  cat /etc/udev/rules.d/70-persistent-net.rules
+    3  vi /etc/udev/rules.d/70-persistent-net.rules
+    4  vi /usr/local/bin/interface_rouge.sh
+    5  vi /etc/network/interfaces
+    6  vi /etc/udev/rules.d/70-persistent-net.rules
+    7  vi etc/systemd/system/interface_rouge.service
+    8  systemctl enable interface_rouge.service
+    9  history 
+   10  > /root/.bash_history
+   11  history 
+   12  > /root/.bash_history
+   13  update-initramfs -k all -u
+   14  umount -lf /sys
+   15  umount -lf /proc
+   16  exit
+   17  cat /etc/sysctl.conf 
+   18  vi /etc/sysctl.conf 
+   19  cat /proc/net/if_inet6
+   20  sysctl -w net.ipv6.conf.all.disable_ipv6=1
+   21  sysctl -w net.ipv6.conf.all.autoconf=0
+   22  sysctl -w net.ipv6.conf.default.disable_ipv6=1
+   23  sysctl -w net.ipv6.conf.default.autoconf=0
+   24  ifconfig 
+   25  vi /etc/sysctl.conf 
+   26  sysctl -
+   27  sysctl -p
+   28  ifconfig 
+   29  update-initramfs -k all -u
+   30  exit
+   31  nano /etc/network/interfaces
+   32  systemctl restart network-manager
+   33  systemctl restart networking
+   34  ip a add 10.0.13.254/24 dev jaune
+   35  ip a del 10.0.13.254/24 dev jaune
+   36  modprobe 8021q
+   37  ip link add link jaune name jaune.13 type vlan
+   38  ip link add link jaune name jaune.13 type vlan id 13
+   39  ip a add 10.0.13.254/24 dev jaune.13
+   40  ip up jaune.13
+   41  ip link set jaune.13 up
+   42  ip a
+   43  ip a add 192.168.13.254/24 dev bleue
+   44  ip a
+   45  nano /etc/sysctl.conf
+   46  nano /etc/sysctl.conf
+   47  nano /etc/sysctl.conf
+   48  sysctl -p /etc/sysctl.conf
+   49  sudo nano /etc/dhcp/dhcpd.conf
+   50  sudo nano /etc/default/isc-dhcp-server
+   51  sudo systemctl restart
+   52  sudo systemctl restart isc-dhcp-server
+   53  sudo nano /etc/dhcp/dhcpd.conf
+   54  sudo systemctl restart isc-dhcp-server
+   55  systemctl status isc-dhcp-server.service
+   56  sudo nano /etc/dhcp/dhcpd.conf
+   57  sudo systemctl restart isc-dhcp-server
+   58  sudo nano /etc/dhcp/dhcpd.conf
+   59  ip a
+   60  sudo nano /etc/dhcp/dhcpd.conf
+   61  sudo nano /etc/dhcp/dhcpd.conf
+   62  sudo systemctl restart isc-dhcp-server
+   63  sudo nano /etc/dhcp/dhcpd.conf
+   64  sudo systemctl restart isc-dhcp-server
+   65  ip a
+   66  sudo nano /etc/default/isc-dhcp-server
+   67  sudo systemctl restart isc-dhcp-server
+   68  ip a
+   69  sudo nano /etc/default/isc-dhcp-server
+   70  systemctl status isc-dhcp-server.service
+   71  sudo nano /etc/default/isc-dhcp-server
+   72  sudo systemctl restart isc-dhcp-server
+   73  sudo nano /etc/default/isc-dhcp-server
+   74  sudo systemctl restart isc-dhcp-server
+   75  sudo nano /etc/default/isc-dhcp-server
+   76  sudo nano /etc/dhcp/dhcpd.conf
+   77  sudo nano /etc/dhcp/dhcpd.conf
+   78  sudo nano /etc/default/isc-dhcp-server
+   79  sudo nano /etc/dhcp/dhcpd.conf
+   80  sudo systemctl restart isc-dhcp-server
+   81  sudo nano /etc/default/isc-dhcp-server
+   82  sudo systemctl restart isc-dhcp-server
+   83  sudo nano /etc/default/isc-dhcp-server
+   84  sudo systemctl restart isc-dhcp-server
+   85  systemctl status isc-dhcp-server.service
+   86  ip a
+   87  sudo nano /etc/dhcp/dhcpd.conf
+   88  sudo nano /etc/dhcp/dhcpd.conf
+   89  sudo nano /etc/default/isc-dhcp-server
+   90  ip a
+   91  ip a add 192.168.13.254/24 dev jaune
+   92  ip a
+   93  sudo nano /etc/default/isc-dhcp-server
+   94  sudo nano /etc/dhcp/dhcpd.conf
+   95  IP A
+   96  ip a
+   97  ip a
+   98  sudo nano /etc/dhcp/dhcpd.conf
+   99  sudo nano /etc/default/isc-dhcp-server
+  100  sudo systemctl restart isc-dhcp-server
+  101  sudo nano /etc/sysctl.conf
+  102  sysctl -p /etc/sysctl.conf
+  103  /etc/bind/sae_dns13.db
+  104  sudo nano /etc/bind/sae_dns13.db
+  105  sudo nano /etc/bind/sae_dns13.db
+  106  sudo nano /etc/bind/sae_dns13.db
+  107  sudo nano /etc/dhcp/dhcpd.conf
+  108  sudo systemctl restart isc-dhcp-server
+  109  sudo nano /etc/dhcp/dhcpd.conf
+  110  sudo nano /etc/bind/sae_dns13.db
+  111  sudo systemctl restart bind9
+  112  sudo systemctl status bind9
+  113  nano /etc/bind/named.conf
+  114  nano /etc/bind/named.conf
+  115  nano /etc/resolv.conf
+  116  sudo systemctl status bind9
+  117  mkdir /var/cache/bind
+  118  chown bind:bind
+  119  chown bind:bind /var/cache/bind
+  120  sudo systemctl status bind9
+  121  sudo systemctl restart bind9
+  122  sudo systemctl status bind9
+  123* host ns13.serveur_dns13.com
+  124  sudo nano /etc/bind/sae_dns13.db
+  125  host routeur.ns13.serveur_dns13.com
+  126  host ns13.serveur_dns13.com
+  127  ip a
+  128  sudo nano /etc/bind/sae_dns13.db
+  129  nano /etc/bind/named.conf
+  130  sudo nano /var/cache/bind/sae_dns13.db
+  131  nano /etc/bind/named.conf
+  132  nano /etc/bind/named.conf
+  133  sudo nano /etc/bind/sae_dns13.db
+  134  sudo nano /var/cache/bind/sae_dns13.db
+  135  nano /etc/bind/named.conf
+  136  sudo systemctl restart bind9
+  137  host ns13.serveur_dns13.com
+  138  nano /etc/bind/named.conf
+  139  nano /etc/bind/named.conf
+  140  nano /etc/bind/named.conf
+  141  nano /etc/bind/named.conf.local
+  142  nano /etc/bind/named.conf.local
+  143  nano /etc/bind/named.conf.local
+  144  sudo nano /etc/bind/sae_dns13.db
+  145  mkdir /var/cache/bind
+  146  sudo systemctl status bind9
+  147  sudo systemctl restart bind9
+  148  ls /var/cache/bind/
+  149  host ns13.serveur_dns13.com
+  150  ls /var/cache/bind/
+  151  nano /etc/bind/named.conf
+  152  nano /etc/bind/named.conf.local
+  153  nano /etc/bind/named.conf.local
+  154  sudo nano /etc/bind/sae_dns13.db
+  155  sudo nano /etc/bind/sae_dns13.db
+  156  nano /etc/bind/named.conf.local
+  157  nano /etc/resolv.conf
+  158  sudo systemctl restart bind9
+  159* 
+  160  host ns13.serveur_dns13.com
+  161  sudo systemctl status bind9
+  162  ping 10.0.13.254
+  163  sudo nano /etc/bind/sae_dns13.db
+  164  nano /etc/bind/named.conf.local
+  165  ip a
+  166  sudo nano /etc/bind/sae_dns13.db
+  167  sudo nano /etc/bind/sae_dns13.db
+  168  nano /etc/bind/named.conf.local
+  169  nano /etc/resolv.conf
+  170  sudo systemctl restart bind9
+  171  host ns13.serveur_dns13.com
+  172  host www.ns13.serveur_dns13.com
+  173  host www.serveur_dns13.com
+  174  sudo nano /etc/bind/sae_dns13.db
+  175  nano /etc/bind/named.conf.local
+  176  nano /etc/bind/named.conf.local
+  177  sudo systemctl restart bind9
+  178  nano /etc/bind/named.conf.local
+  179  sudo nano /etc/bind/sae_dns13.db
+  180  nano /etc/bind/named.conf.local
+  181  sudo systemctl restart bind9
+  182  host www.serveur_dns13.com
+  183  ip a
+  184  nano /etc/bind/named.conf.local
+  185  sudo nano /etc/bind/sae_dns13.db
+  186  sudo nano /etc/bind/sae_dns13.db
+  187  sudo systemctl restart bind9
+  188  host www.serveur_dns13.com
+  189  sudo nano /etc/bind/sae_dns13.db
+  190  nano /etc/bind/named.conf.local
+  191  nano /etc/resolv.conf
+  192  sudo systemctl restart bind9
+  193  host www.serveur_dns13.com
+  194  nano /etc/bind/named.conf.local
+  195  sudo systemctl restart bind9
+  196  host www.serveur_dns13.com
+  197  nano /etc/resolv.conf
+  198  nano /etc/bind/named.conf.local
+  199  nano /var/cache/bind/sae_dns13.db 
+  200  nano /etc/bind/named.conf.local
+  201  nano /var/cache/bind/sae_dns13.db 
+  202  nano /etc/bind/named.conf.local
+  203  nano /etc/bind/named.conf
+  204  nano /var/cache/bind/sae_dns13.db 
+  205  nano /etc/resolv.conf
+  206  sudo systemctl restart bind9
+  207  host www.serveur_dns13.com
+  208  nano /var/cache/bind/sae_dns13.db 
+  209  nano /var/cache/bind/sae_dns13.db
+  210  sudo systemctl restart bind9
+  211  host www.serveur_dns13.com
+  212  nano /var/cache/bind/sae_dns13.db 
+  213  nano /etc/resolv.conf
+  214  nano /var/cache/bind/sae_dns13.db 
+  215  nano /etc/resolv.conf
+  216  ip a
+  217  nano /etc/resolv.conf
+  218  sudo systemctl restart bind9
+  219  host www.serveur_dns13.com
+  220  nano /etc/bind/named.conf
+  221  nano /etc/bind/named.conf.local 
+  222  nano /etc/bind/named.conf
+  223  nano /var/cache/bind/sae_dns13.db
+  224  sudo service bind9 restart
+  225  nano /etc/bind/named.conf
+  226  sudo service apache2 restart
+  227  nano /etc/bind/named.conf
+  228  nano /var/cache/bind/sae_dns13.db
+  229  nano /etc/bind/named.conf
+  230  sudo systemctl restart NetworkManager
+  231  sudo systemctl restart networking
+  232  nano /etc/bind/named.conf
+  233  nano /var/cache/bind/sae_dns13.db
+  234  nano /etc/bind/named.conf
+  235  nano /var/cache/bind/sae_dns13.db
+  236  nano /etc/bind/named.conf
+  237  nano /var/cache/bind/sae_dns13.db
+  238  nano /etc/bind/named.conf
+  239  ls -l /var/cache/bind/
+  240  chmod -R 777 /var/cache/bind/*
+  241  ls -l /var/cache/bind/
+  242  nano /etc/bind/named.conf
+  243  nano /var/cache/bind/sae_dns13.db
+  244  nano /etc/bind/named.conf
+  245  nano /var/cache/bind/sae_dns13.db
+  246  sudo systemctl restart bind9
+  247  named-checkconf /var/cache/bind/sae_dns13.db 
+  248  nano /var/cache/bind/sae_dns13.db
+  249  named-checkconf /var/cache/bind/sae_dns13.db 
+  250  nano /var/cache/bind/sae_dns13.db
+  251  named-checkconf /var/cache/bind/sae_dns13.db 
+  252  named-checkconf /var/cache/bind/sae_dns13.db 
+  253  nano /var/cache/bind/sae_dns13.db
+  254  sudo systemctl restart bind9
+  255  named-checkconf /var/cache/bind/sae_dns13.db 
+  256  sudo systemctl restart bind9
+  257  nano /var/cache/bind/sae_dns13.db
+  258  named-checkconf /var/cache/bind/sae_dns13.db 
+  259  named-checkconf /var/cache/bind/sae_dns13.db 
+  260  nano /var/cache/bind/sae_dns13.db
+  261  nano /var/cache/bind/sae_dns13.db
+  262  dig www
+  263  nano /var/cache/bind/sae_dns13.db
+  264  dig www serveur_dns13.com.
+  265  dig www serveur_dns13.com
+  266  dig www serveur_dns13.com
+  267  dig serveur_dns13.com
+  268  dig www
+  269  nano /var/cache/bind/sae_dns13.db
+  270  sudo systemctl restart bind9
+  271  named-checkconf /var/cache/bind/sae_dns13.db 
+  272  nano /var/cache/bind/sae_dns13.db
+  273  host www
+  274  nano /var/cache/bind/sae_dns13.db
+  275  host routeur
+  276  nano /var/cache/bind/sae_dns13.db
+  277  named-checkconf /var/cache/bind/sae_dns13.db 
+  278  nano /var/cache/bind/sae_dns13.db
+  279  nano /var/cache/bind/sae_dns13.db 
+  280  nano /var/cache/bind/sae_dns13.db
+  281  named-checkconf /var/cache/bind/sae_dns13.db 
+  282  nano /var/cache/bind/sae_dns13.db
+  283  nano /var/cache/bind/sae_dns13.db
+  284  nano /var/cache/bind/sae_dns13.db
+  285  named-checkconf /var/cache/bind/sae_dns13.db 
+  286  history | grep nano
+  287  nano /var/cache/bind/sae_dns13.db 
+  288  nano /etc/bind/named.conf
+  289  nano /var/cache/bind/sae_dns13.db 
+  290  nano /etc/bind/named.conf
+  291  nano /var/cache/bind/sae_dns13.db 
+  292  systemctl restart bind9
+  293  nano /var/cache/bind/sae_dns13.db 
+  294  host routeur
+  295  nano /var/cache/bind/sae_dns13.db 
+  296  host ns13.serveur_dns13.com
+  297  nano /var/cache/bind/sae_dns13.db 
+  298  nano /etc/resolv.conf
+  299  nano /etc/bind/named.conf
+  300  chown bind:bind  /var/cache/bind
+  301  systemctl restart bind9 
+  302  host www.serveur_dns13.com
+  303  systemctl status bind9 
+  304  host www.serveur_dns13.com
+  305  host ns13.serveur_dns13.com
+  306  ip a
+  307  host ns13.serveur_dns13.com
+  308  nano /var/cache/bind/sae_dns13.db 
+  309  nano /var/cache/bind/sae_dns13.db 
+  310  systemctl restart bind9 
+  311  host ns13.serveur_dns13.com
+  312  nano /etc/bind/named.conf
+  313  nano /var/cache/bind/sae_dns13.db 
+  314  systemctl restart bind9 
+  315  host ns13.serveur_dns13.com
+  316  nano /var/cache/bind/sae_dns13.db 
+  317  ip a
+  318  host ns13.serveur_dns13.com
+  319  nano /var/cache/bind/sae_dns13.db 
+  320  fg
+  321  host ns13.serveur_dns13.com
+  322  systemctl restart bind9 
+  323  host ns13.serveur_dns13.com
+  324  cp /var/cache/bind/sae_dns13.db ./Documents/
+  325  ls ./Documents/
+  326  nano /var/cache/bind/sae_dns13.db 
+  327  nano /var/cache/bind/sae_dns13.db 
+  328  host ns13.serveur_dns13.com
+  329  systemctl restart bind9 
+  330  host ns13.serveur_dns13.com
+  331  nano /var/cache/bind/sae_dns13.db 
+  332  nano /var/cache/bind/sae_dns13.db 
+  333  nano /etc/bind/named.conf
+  334* nano /etc/bind/
+  335  nano /etc/bind/named.conf.default-zones 
+  336  nano /etc/bind/named.conf.options 
+  337  nano /etc/bind/named.conf
+  338  nano /etc/bind/named.conf
+  339  systemctl restart bind9 
+  340  systemctl status bind9 
+  341  host ns13.serveur_dns13.com
+  342  nano /etc/resolv.conf
+  343  nano /var/cache/bind/sae_dns13.db 
+  344  nano /etc/resolv.conf
+  345  ip a
+  346  nano /etc/resolv.conf
+  347  nano /etc/resolv.conf
+  348  systemctl restart bind9 
+  349  host ns13.serveur_dns13.com
+  350  nano /var/cache/bind/sae_dns13.db 
+  351  systemctl restart bind9 
+  352  host ns13.serveur_dns13.com
+  353  sudo nano /etc/sysctl.conf
+  354  sysctl -p /etc/sysctl.conf
+  355  sudo nano /etc/dhcp/dhcpd.conf
+  356  sudo nano /etc/default/isc-dhcp-server
+  357  sudo systemctl restart isc-dhcp-server
+  358  sudo nano /etc/default/isc-dhcp-server
+  359  sudo nano /etc/dhcp/dhcpd.conf
+  360  nano /etc/apache2/site-available/monsite.conf
+  361  ip a
+  362  ping 10.0.13.13
+  363  ip a
+  364  ping 10.0.13.13
+  365  ping 10.0.13.13
+  366  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  367  ip a
+  368  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.0:80
+  369  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.1:80
+  370  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  371  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.69:80
+  372  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.14.69:80
+  373  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  374  ping 192.168.13.1
+  375  ip a
+  376  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  377  ls
+  378  ip a
+  379  history | grep iptable
+  380  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  381  ip a
+  382  ping 192.
+  383  ping 192.168.13.254
+  384  ping 192.168.13.1
+  385  ping 10.0.0.21
+  386  ip a
+  387  sudo iptables -t nat -A PREROUTING -p -i bleue tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  388  sudo iptables -t nat -A PREROUTING -i bleue -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  389  sudo iptables -t nat -A PREROUTING -i bleue --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  390  sudo iptables -t nat -A PREROUTING -i bleue -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  391  ip a
+  392  sudo iptables -t nat -A PREROUTING -i jaune -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  393  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
+  394  sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13
+  395  sudo nano /etc/sysctl.conf
+  396* sysctl -p /etc/sysctl.confOB
+  397  sudo systemctl restart iptables
+  398  sudo systemctl restart iptable
+  399  sudo systemctl restart iptable
+  400  ./log > ROUTEUR.log
+  401  log > ROUTEUR.log
+  402  history > ROUTEUR.log
+  403  ls
+  404  ls
+  405  chmod -R 777 *
+  406  ls -l
+  407  nano ROUTEUR.log 
+  408  nano ROUTEUR.log 
+  409  nano ROUTEUR.log 
+  410  history > ROUTEUR.log
+  411  nano ROUTEUR.log 
+  412  nano ROUTEUR.log 
+  413  LS
+  414  ls
+  415  cd Downloads/
+  416  history > ROUTEUR.log
