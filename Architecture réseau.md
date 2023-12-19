@@ -1,6 +1,6 @@
 | Justine BERNIER | Basma MALKI | Clément PASQUET |
 |-----------------|-------------|-----------------|
-
+(Nous nous sommes mis à trois car le nombre d'élèves dans la classe est impaire.)
 
 **Travail à réaliser**
 
@@ -10,13 +10,13 @@ Ci-dessous un schéma de l’organisation du réseau que vous aurez à mettre en
 
 
 
-Interne : 10.0.13.13/24 dev jaune.13
+Interne (AKA ClientINT) : 10.0.13.13/24 dev jaune.13
 
 La machine qui fera office de routeur aura deux adresses :
   * dans le réseau interne (AKA Routeur Interne) -> 10.0.13.254/24 dev jaune.13
   * dans le réseau externe (AKA Routeur Externe) -> 192.168.13.254/24 dev jaune
 
-Externe : 192.168.13.1/24 dev jaune
+Externe (AKA ClientEXT) : 192.168.13.1/24 dev jaune
 
 
 ## But 
@@ -26,9 +26,9 @@ Le but est de mettre en place **un vlan**, **un serveur DHCP**, pour pouvoir fac
 
 ## Mettre en place le VLAN :
 
-Avant de commencer, nous devons mettre en place le VLAN.
+Avant de commencer, nous devons mettre en place le VLAN sur la partie privée de notre réseau.
 
-C'est le VLAN qui permettrait plus tard de donner une configuration réseau au client externe grace au serveur DHCP de routeur.
+C'est le VLAN qui permettrait plus tard de donner une configuration réseau au client externe *grâce au serveur DHCP de routeur*.
 
 Nous avons choisi de ne mettre en place *qu'un seul VLAN*, entre INTERNE et Routeur Interne.
 
@@ -62,7 +62,7 @@ Pour le routeur, nous avons utilisé la commande :
 ```
 ip a add 10.0.13.254/24 dev jaune.13
 ```
-Et pour le client :
+Et pour le client interne :
 ```
 ip a add 10.0.13.13/24 dev jaune.13
 ```
@@ -112,7 +112,7 @@ subnet 10.0.13.0 netmask 255.255.255.0 {
    }
  }
 ```
-Cela définit la **plage d'adresses IP attribuables**, le **serveur DNS**, le **nom de domaine**, le **routeur** et les **configurations spécifiques à l'hôte CLIENT**.
+Cela définit la **plage d'adresses IP attribuables**, le **serveur DNS**, le **nom de domaine**, le **routeur** et les **configurations spécifiques à l'hôte CLIENT** qui lui attribue son adresse IP en fonction de son adresse MAC.
 
 2. Modifier le fichier de configuration **isc-dhcp-server** :
 
@@ -125,13 +125,11 @@ interfacesv4="jaune.13"
 ```
 3. Redémarrer le service DHCP :
 
-Après avoir effectué ces modifications, nous avons redemarrons le service DHCP pour appliquer les changements :
+Après avoir effectué ces modifications, nous avons redémarré le service DHCP pour appliquer les changements :
 ```
 systemctl restart isc-dhcp-server
 ```
-Nous avons installé et configuré un serveur DHCP (paquet isc-dhcp-server). 
-
-Celui-ci nous fournira une **route par défaut** vers la machine ROUTEUR, le **nom de domaine**, et **l’IP du serveur DNS**. 
+Nous avons installé et configuré un serveur DHCP (paquet isc-dhcp-server). Comme indiqué juste au-dessus, celui-ci nous fournira un l'adresse du routeur interne, le **nom de domaine**, et **l’IP du serveur DNS**. 
 
 L'hôte INTERNE doit se voir délivrer une **adresse fixe** en fonction de son adresse MAC.
 
@@ -223,6 +221,9 @@ La sortie terminal devrait afficher :
 ```shell
 ns13.serveur_dns13.com has address 192.168.13.254
 ```
+Ensuite, pour faire une délégation, nous avons ajouté au fichier sae_dns13.db ceci :
+serveur_dns13.com.       IN    NS     ns13.serveur_dns13.com.
+ns13.serveur_dns13.com.  IN    A      192.168.13.254
 
 ## Pour la partie HTTP :
 
@@ -264,13 +265,13 @@ Nous allons dans le dossier et copions /app et /system dans /var/www/html :
 sudo cp -r ./* /var/www/html
 ```
 
-Pour pouvoir tester depuis d'autres pc, il faut faire en sorte de ne pas passer par le proxy ( le proxy étant paramétré pour refuser de faire passer la requête ). 
+Pour pouvoir tester depuis d'autres machines, il faut faire en sorte de ne pas passer par le proxy ( le proxy étant paramétré pour refuser de faire passer la requête ). 
 
 Dans les préférences du proxy, nous avons rajouté dans la catégorie "noproxy for"  : "10.0.13.13"
 
 
 
-Pour pouvoir permettre au PC extérieurs d'accéder à la page PHP, nous devons rediriger le flux du port 80 du **serveur** vers la bonne ip : 
+Pour pouvoir permettre au PC extérieurs d'accéder à la page PHP, nous devons rediriger le flux du port 80 du **serveur** vers la bonne ip, grâce a une command iptables sur le routeur : 
 ```shell
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
 ```
@@ -325,7 +326,7 @@ permettant d'automatiser la configuration réseau des périphériques connectés
 * Un **DNS** : 
 simplifiant l'utilisation des noms de domaine, plutôt que de mémoriser des adresses IP complexes, les utilisateurs peuvent désormais accéder à des ressources réseau en utilisant des noms simples, améliorant ainsi l'expérience utilisateur.
 * Un **Serveur HTTP** :
-constituant une étape cruciale pour rendre accessible notre projet de SAE. Grâce à cette configuration, notre site web peut être consulté via un navigateur.
+constituant une étape cruciale pour rendre accessible notre projet de SAE. Grâce à cette configuration, notre site web peut être consulté via un navigateur et sur toute les machines de nos réseaux interne et externe.
 
 En conclusion, notre travail a abouti à la mise en place réussie d'un réseau fonctionnel comprenant un VLAN, un serveur DHCP, un serveur DNS, et enfin, un serveur HTTP permettant l'accès à notre projet de SAE. 
 
