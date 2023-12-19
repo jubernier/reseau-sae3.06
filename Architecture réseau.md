@@ -1,8 +1,10 @@
+# SAÉ Réseau
+
 | Justine BERNIER | Basma MALKI | Clément PASQUET |
 |-----------------|-------------|-----------------|
 
 
-(Nous nous sommes mis à trois car le nombre d'élèves dans la classe est impaire.)
+(Nous nous sommes mis à trois car le nombre d'élèves dans la classe est impair.)
 
 **Travail à réaliser**
 
