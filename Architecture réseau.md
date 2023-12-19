@@ -1,5 +1,7 @@
 | Justine BERNIER | Basma MALKI | Clément PASQUET |
 |-----------------|-------------|-----------------|
+
+
 (Nous nous sommes mis à trois car le nombre d'élèves dans la classe est impaire.)
 
 **Travail à réaliser**
@@ -296,25 +298,36 @@ Toutes ces commandes permettent d'accéder au serveur HTTP, et donc, a notre sit
 Il est par contre nécessaire, pour toute machine extérieur au réseau, de rajouter [la route correspondante](#lienIpRoute).
 
 <br>
-### Test envoie de paquets entre réseaux
 
-Nous pouvons faire cela avec toutes les requêtes, notamment celles pour ping : 
+### Test envoie de paquets entre réseaux (Outils utilisés : Wireshark )
+
+Nous pouvons faire cela avec toutes les requêtes, notamment celles pour ping :
+
 <img src="img/InternAExterne.png"  width="700" height="400">
 
-Nous pouvons voir que les ping se basent sur une méthode de "ping-pong"; les pings sont envoyés, puis ils attendent une réponse.
+Voici une capture de paquets effectué sur la machine routeur lorsque la machine interne 'ping' la machine externe.
+Nous pouvons voir que les ping se basent sur une méthode de "ping-pong"; les pings sont envoyés, puis ils attendent une réponse. Nous pouvons observer que l'autre machine répond bien à la requête de la première machine.
 
 Cette requête sert à démontrer que **INTERNE peut accéder à l'extérieur**.
 
 <br>
 
-Dans le même principe, voici un capture d'écran supplémentaire qui prouve l'inverse, *une machine extérieur peut accéder à INTERNE* :
+Dans le même principe, voici un capture de paquets supplémentaire venant du routeur qui prouve l'inverse, *la machine extérieure peut accéder à INTERNE* :
+
 <img src="img/ExterneAInterne.png"  width="700" height="400">
+
 L'envoie de paquets s'effectue bien entre la machine interne et la machine externe.
+
 #### Test requête HTTP
-Ici nous pouvons voir les différents paquets envoyés **lorsque la machine extérieur au réseau souhaite accéder au serveur HTTP** :
+
+Ici, sur cette image venant d'une capture de paquets sur la machine routeur, nous pouvons voir les différents paquets envoyés **lorsque la machine extérieure au réseau souhaite accéder au serveur HTTP** :
+
 <img src="img/HTTP_ClientaHTTP2.png"  width="700" height="400">
 
+Nous pouvons observer que le routeur a un 'get' qui récupère la demande d'accès au site (la requête HTTP) qu'a fait la machine extérieur et qui l'a redirige vers là ou est présent le site c'est à dire à la machine interne 10.0.13.13. Ensuite, la machine interne envoie en retour une réponse HTTP "OK" pour l'accès au site. 
+
 Finalement, voici une capture d'écran montrant les différents paquets envoyés quand *ROUTEUR accède à la page web de INTERNE* :
+
 <img src="img/RouterVersInterne.png"  width="700" height="400">
 
 
@@ -330,6 +343,6 @@ simplifiant l'utilisation des noms de domaine, plutôt que de mémoriser des adr
 * Un **Serveur HTTP** :
 constituant une étape cruciale pour rendre accessible notre projet de SAE. Grâce à cette configuration, notre site web peut être consulté via un navigateur et sur toute les machines de nos réseaux interne et externe.
 
-En conclusion, notre travail a abouti à la mise en place réussie d'un réseau fonctionnel comprenant un VLAN, un serveur DHCP, un serveur DNS, et enfin, un serveur HTTP permettant l'accès à notre projet de SAE. 
+En conclusion, notre travail a abouti à la mise en place réussie d'un réseau fonctionnel omprenant un VLAN, un serveur DHCP, un serveur DNS, et enfin, un serveur HTTP permettant l'accès à notre projet de SAE. 
 
 *Ces étapes ont renforcé l'accessibilité de notre site web et ont constitué une opportunité d'améliorer nos compétences en gestion réseau.*
