@@ -295,13 +295,10 @@ Puis, il faut faire une requête HTTP avec l'adresse du site pour pouvoir y acc�
 Toutes ces commandes permettent d'accéder au serveur HTTP, et donc, a notre site web, en passant par le serveur.
 Il est par contre nécessaire, pour toute machine extérieur au réseau, de rajouter [la route correspondante](#lienIpRoute).
 
-Ici nous pouvons voir les différents paquets envoyés **lorsqu'une machine extérieur au réseau souhaite accéder au serveur HTTP** :
-<img src="img/HTTP_ClientaHTTP2.png"  width="700" height="400">
-
 <br>
+### Test envoie de paquets entre réseaux
 
-Avant nous avions fait cela avec une requête HTTP. 
-Cependant nous pouvons faire cela avec toutes les requêtes, notamment celles pour ping : 
+Nous pouvons faire cela avec toutes les requêtes, notamment celles pour ping : 
 <img src="img/InternAExterne.png"  width="700" height="400">
 
 Nous pouvons voir que les ping se basent sur une méthode de "ping-pong"; les pings sont envoyés, puis ils attendent une réponse.
@@ -312,6 +309,10 @@ Cette requête sert à démontrer que **INTERNE peut accéder à l'extérieur**.
 
 Dans le même principe, voici un capture d'écran supplémentaire qui prouve l'inverse, *une machine extérieur peut accéder à INTERNE* :
 <img src="img/ExterneAInterne.png"  width="700" height="400">
+L'envoie de paquets s'effectue bien entre la machine interne et la machine externe.
+#### Test requête HTTP
+Ici nous pouvons voir les différents paquets envoyés **lorsque la machine extérieur au réseau souhaite accéder au serveur HTTP** :
+<img src="img/HTTP_ClientaHTTP2.png"  width="700" height="400">
 
 Finalement, voici une capture d'écran montrant les différents paquets envoyés quand *ROUTEUR accède à la page web de INTERNE* :
 <img src="img/RouterVersInterne.png"  width="700" height="400">
