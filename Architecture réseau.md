@@ -271,7 +271,7 @@ Dans les préférences du proxy, nous avons rajouté dans la catégorie "noproxy
 
 
 
-Pour pouvoir permettre au PC extérieurs d'accéder à la page PHP, nous devons rediriger le flux du port 80 du **serveur** vers la bonne ip, grâce a une command iptables sur le routeur : 
+Pour pouvoir permettre au machines extérieurs d'accéder à la page PHP, nous devons rediriger le flux du port 80 du **serveur** vers la bonne ip, grâce a une command iptables sur le routeur : 
 ```shell
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 10.0.13.13:80
 ```
@@ -289,6 +289,7 @@ Finalement, nous devons mettre en place des routes pour permettre a des machines
 <a id="lienIpRoute">```ip route add 10.0.13.0/24 via 192.168.13.254```</a>
 ( sur la machine extérieur )
 
+Puis, il faut faire une requête HTTP avec l'adresse du site pour pouvoir y accéder. La requete est envoyé à l'adresse précisée (adresse routeur externe AKA adresse pour accéder au site sur le réseau), le serveur lorsqu'il reçoit la requête redirige le flux du port 80 vers la bonne ip, grâce a la commande iptables sur le routeur.
 <img src="img/website_view.png" alt="Image d'Illustration du site web" width="500" height="600">
 
 Toutes ces commandes permettent d'accéder au serveur HTTP, et donc, a notre site web, en passant par le serveur.
